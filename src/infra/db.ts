@@ -1,13 +1,12 @@
-import pg from 'pg';
+import Knex from "knex";
 
-const pool = new pg.Pool({
-    host: "localhost",
-    port: 5432,
-    database: process.env.PG_DB_NAME,
-    password: "password",
-    user: "postgres"
-});
-
-export const query = (text: string, params: any) => {
-    return pool.query(text, params)
-}
+export const knex = Knex({
+    client: "pg",
+    connection: {
+        host: "localhost",
+        port: 5432,
+        database: process.env.PG_DB_NAME,
+        password: "postgres",
+        user: "postgres"
+    }
+})

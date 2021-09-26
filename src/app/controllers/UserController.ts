@@ -1,23 +1,22 @@
-import express, { Router } from "express";
-import { IUserRepository } from "../../domain/database/repositories/IUserRepository";
-import { UserService } from "../services/userService";
+import express from "express";
+import { IUserService } from "../../domain/services/IUserService";
+import { UserService } from "../services/UserService";
 
 export class UserController {
-    private userRepository: IUserRepository;
+    private userService: IUserService;
 
-    constructor(userRepository: IUserRepository) {
-        this.userRepository = userRepository
+    constructor(userService: IUserService) {
+        this.userService = userService;
     }
 
     async create (req: express.Request, res: express.Response) {
-        const userService = new UserService(this.userRepository);
         const { name, age } = req.body;
 
         if (!name && !age) {
             return res.status(400).send();
         }
 
-        const user = await userService.create({ name, age });
+        const user = await this.userService.create({ name, age });
 
         return res.send(user).status(201);
     }
