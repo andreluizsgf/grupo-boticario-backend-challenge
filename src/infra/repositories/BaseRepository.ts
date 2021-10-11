@@ -21,4 +21,12 @@ export class BaseRepository<T extends BaseModel> {
             updatedAt: now
         }).returning('*'))[0] as T
     }
+
+    async get(id: string) {
+        return (await knex(this.tableName).select('*').where({id}).first()) as T | undefined;
+    }
+
+    async delete(id: string) {
+        return (await knex(this.tableName).delete('*').where({id}).first()) as T | undefined;
+    }
 }

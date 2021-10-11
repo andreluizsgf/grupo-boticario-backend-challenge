@@ -1,6 +1,5 @@
 import * as express from 'express';
 import { UserController } from '../app/controllers/UserController';
-import { IUserRepository } from '../domain/database/repositories/IUserRepository';
 
 class Router {
   private userController;
@@ -10,6 +9,7 @@ class Router {
     const router = express.Router();
 
     router.post('/', this.userController.create.bind(this.userController));
+    router.get('/:id', this.userController.get.bind(this.userController));
 
     server.use('/', router);
   }
