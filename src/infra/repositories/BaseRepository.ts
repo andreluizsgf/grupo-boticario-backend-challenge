@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { BaseModel } from "../../domain/entities/Base";
-import { knex } from "../db";
+import { knex } from "../knexfile";
 
 type Insert<T extends BaseModel> = Omit<T, "createdAt" | "updatedAt" | "id"> & {
     id?: string

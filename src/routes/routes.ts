@@ -11,7 +11,7 @@ class Router {
     router.post('/', this.userController.create.bind(this.userController));
     router.get('/:id', this.userController.get.bind(this.userController));
 
-    server.use('/', router);
+    server.use('/user', router);
   }
 }
 
