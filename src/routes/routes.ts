@@ -1,17 +1,16 @@
 import * as express from 'express';
-import { UserController } from '../app/controllers/UserController';
+import { DealerController } from '../app/controllers/DealerController';
 
 class Router {
-  private userController;
+  private dealerController;
 
-  constructor(server: express.Express, userController: UserController) {
-    this.userController = userController;
+  constructor(server: express.Express, dealerController: DealerController) {
+    this.dealerController = dealerController;
     const router = express.Router();
 
-    router.post('/', this.userController.create.bind(this.userController));
-    router.get('/:id', this.userController.get.bind(this.userController));
+    router.post('/', this.dealerController.create.bind(this.dealerController));
 
-    server.use('/user', router);
+    server.use('/dealer', router);
   }
 }
 

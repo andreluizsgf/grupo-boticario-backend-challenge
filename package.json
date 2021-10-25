@@ -11,6 +11,7 @@
     "init": "jest --init",
     "migration:create": "knex migrate:make --knexfile ./src/infra/knex.ts -x ts",
     "migration:run": "knex migrate:latest --knexfile ./src/infra/knexfile.ts",
+    "migration:rollback": "knex migrate:rollback --knexfile ./src/infra/knexfile.ts",
     "database:create": "docker exec postgresDB psql -U postgres postgres -c \"CREATE DATABASE $(grep PG_DB_NAME .env | cut -d= -f 2)\""
   },
   "keywords": [],

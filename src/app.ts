@@ -1,18 +1,18 @@
 import express from 'express';
-import { UserController } from './app/controllers/UserController';
+import { DealerController } from './app/controllers/DealerController';
 import { errorHandler } from './app/middlewares/ErrorMiddleware';
-import { UserService } from './app/services/UserService';
-import { UserRepository } from './infra/repositories/UserRepository';
+import { DealerService } from './app/services/DealerService';
+import { DealerRepository } from './infra/repositories/DealerRepository';
 import Router from './routes/routes';
 
 export const app = express();
 
 app.use(express.json());
 
-const userRepository = new UserRepository();
-const userService = new UserService(userRepository);
-const userController = new UserController(userService);
+const dealerRepository = new DealerRepository();
+const dealerService = new DealerService(dealerRepository);
+const dealerController = new DealerController(dealerService);
 
-new Router(app, userController);
+new Router(app, dealerController);
 
 app.use(errorHandler);

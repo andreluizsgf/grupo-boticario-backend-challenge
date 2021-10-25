@@ -1,4 +1,4 @@
-import { knex } from "../infra/knexfile";
+import { knex } from "../../knexfile";
 import pg from "pg";
 
 process.env.TZ = "UTC";
