@@ -31,3 +31,9 @@ export class ConflictException extends HttpException {
         super('ConflictException', message, 409);
     }
 }
+
+export class AuthenticationException extends HttpException {
+    constructor(message: string) {
+        super('AuthenticationException', message, 401);
+    }
+}

@@ -1,13 +1,13 @@
-interface BaseDealerDto {
+interface BaseDealerRequest {
     name: string
     cpf: string
     email: string
     password: string
 }
 
-export interface CreateDealerRequest extends BaseDealerDto {}
+export interface CreateDealerRequest extends BaseDealerRequest {}
 
-export interface DealerResponse extends BaseDealerDto {
+export interface DealerResponse extends BaseDealerRequest {
     id: string
     createdAt: Date
     updatedAt: Date
