@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../app";
-import { knex } from "../infra/knexfile";
+import { knex } from "../../knexfile";
 
 test("user", async () => {
     const user = await request(app).get('/user/1');

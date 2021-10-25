@@ -1,3 +1,4 @@
+import { Knex } from "knex";
 import { v4 } from "uuid";
 import { BaseModel } from "../../domain/entities/Base";
 import { knex } from "../knex";
@@ -7,6 +8,8 @@ type Insert<T extends BaseModel> = Omit<T, "createdAt" | "updatedAt" | "id"> & {
     createdAt?: Date
     updatedAt?: Date
 }
+
+type Filter<T extends BaseModel> = Partial<Omit<T, "createdAt" | "updatedAt">>;
 
 export class BaseRepository<T extends BaseModel> {
     constructor(private readonly tableName: string) {}
@@ -28,5 +31,9 @@ export class BaseRepository<T extends BaseModel> {
 
     async delete(id: string) {
         return (await knex(this.tableName).delete('*').where({id}).first()) as T | undefined;
+    }
+
+    async findOneBy(condition: Filter<T> | ((qb: Knex.QueryBuilder<T>) => unknown) = {}) {
+        return knex<T>(this.tableName).select().where(condition).first() as Promise<T | undefined>;
     }
 }

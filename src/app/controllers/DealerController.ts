@@ -19,7 +19,7 @@ export class DealerController {
 
             const dealer = await this.dealerService.create({ name, email, cpf, password });
 
-            return res.send(dealer).status(201);
+            return res.status(201).send(dealer);
         } catch (error) {
             next(error)
         }

@@ -3,7 +3,8 @@ import { HttpException } from "../../domain/dtos/Error";
 
 export async function errorHandler(error: any, req: any, res: express.Response, next: any) {
     if (error instanceof HttpException) {
-        return res.send({error: error.message}).status(error.statusCode);
+        console.log(error.statusCode);
+        return res.status(error.statusCode).send({error: error.message});
     }
 
     console.log(error);

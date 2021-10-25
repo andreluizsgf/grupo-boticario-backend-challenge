@@ -25,3 +25,9 @@ export class InternalErrorException extends HttpException {
         super('InternalErrorException', message, 500);
     }
 }
+
+export class ConflictException extends HttpException {
+    constructor(message: string) {
+        super('ConflictException', message, 409);
+    }
+}
