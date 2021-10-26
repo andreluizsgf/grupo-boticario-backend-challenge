@@ -2,7 +2,7 @@ import express, { NextFunction } from "express";
 import { InvalidArgumentException } from "../../domain/dtos/Error";
 import { IAuthService } from "../../domain/services/IAuthService";
 
-export class AuthController {
+export default class AuthController {
     private authService: IAuthService;
 
     constructor(authService: IAuthService) {

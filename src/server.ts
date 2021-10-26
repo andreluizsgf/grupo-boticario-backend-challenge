@@ -1,5 +1,8 @@
-import { app } from "./app";
+import Application from "./app";
 
-app.listen(3000, () => {
+const application = new Application();
+application.start()
+
+application.app.listen(3000, () => {
     console.log("listening on port 3000");
 });

@@ -1,10 +1,10 @@
 import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
-import { ConflictException, InvalidArgumentException, NotFoundException } from "../../domain/dtos/Error";
+import { ConflictException } from "../../domain/dtos/Error";
 import { CreateDealerRequest } from "../../domain/dtos/DealerDto";
 import { IDealerService } from "../../domain/services/IDealerService";
 import { hash } from "bcrypt";
-import { DealerValidator } from "../../domain/common/validators/DealerValidator";
-export class DealerService implements IDealerService {
+import DealerValidator from "../../domain/common/validators/DealerValidator";
+export default class DealerService implements IDealerService {
     private dealerRepository: IDealerRepository;
 
     constructor(dealerRepository: IDealerRepository) {

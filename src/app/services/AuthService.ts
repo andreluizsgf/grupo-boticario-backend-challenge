@@ -2,10 +2,10 @@ import { IDealerRepository } from "../../domain/database/repositories/IDealerRep
 import { LoginRequest } from "../../domain/dtos/AuthDto";
 import { IAuthService } from "../../domain/services/IAuthService";
 import { compare } from "bcrypt";
-import { NotFoundException } from "../../domain/dtos/Error";
+import NotFoundException from "../../domain/dtos/Error";
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
-export class AuthService implements IAuthService {
+export default class AuthService implements IAuthService {
     private dealerRepository: IDealerRepository;
 
     constructor(dealerRepository: IDealerRepository) {

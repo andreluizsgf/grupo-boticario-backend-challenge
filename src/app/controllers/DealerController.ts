@@ -2,14 +2,16 @@ import express, { NextFunction } from "express";
 import { InvalidArgumentException } from "../../domain/dtos/Error";
 import { IDealerService } from "../../domain/services/IDealerService";
 
-export class DealerController {
+
+export default class DealerController {
     private dealerService: IDealerService;
+    public route: string = "/dealer";
 
     constructor(dealerService: IDealerService) {
         this.dealerService = dealerService;
     }
 
-    async create (req: express.Request, res: express.Response, next: NextFunction) {
+    async create(req: express.Request, res: express.Response, next: NextFunction) {
         try {
             const { name, email, cpf, password } = req.body;
 

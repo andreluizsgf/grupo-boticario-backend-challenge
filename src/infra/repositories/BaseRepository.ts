@@ -11,7 +11,7 @@ type Insert<T extends BaseModel> = Omit<T, "createdAt" | "updatedAt" | "id"> & {
 
 type Filter<T extends BaseModel> = Partial<Omit<T, "createdAt" | "updatedAt">>;
 
-export class BaseRepository<T extends BaseModel> {
+export default class BaseRepository<T extends BaseModel> {
     constructor(private readonly tableName: string) {}
 
     async insert(item: Insert<T>) {

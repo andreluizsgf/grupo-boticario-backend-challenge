@@ -21,30 +21,34 @@ export default class AuthMiddleware {
             });
 
             if (!user) {
-                throw new Error();
+                throw new AuthenticationException('Acesso não autorizado.');
             }
 
             return user;
         } catch (error) {
             if (error instanceof TokenExpiredError) {
-                throw new AuthenticationException('Token expired.');
+                throw new AuthenticationException('Token expirado.');
             }
 
-            throw new AuthenticationException('Unauthorized access');
+            throw new AuthenticationException('Acesso não autorizado.');
         }
     }
 
-    public async handle(request: express.Request, res: express.Response, next: any) {
-        const authHeader = request.headers.authorization;
-
-        if (!authHeader) {
-            throw new AuthenticationException('Unauthorized access');
+    public async handle(request: express.Request, res: express.Response, next: express.NextFunction) {
+        try {
+            const authHeader = request.headers.authorization;
+    
+            if (!authHeader) {
+                throw new AuthenticationException('Acesso não autorizado.');
+            }
+    
+            const jwtToken = authHeader.split('Bearer ')[1];
+    
+            await this.authenticate(jwtToken);
+    
+            await next();
+        } catch (error) {
+            next(error);
         }
-
-        const jwtToken = authHeader.split('Bearer ')[1];
-
-        await this.authenticate(jwtToken);
-
-        await next();
     }
 }

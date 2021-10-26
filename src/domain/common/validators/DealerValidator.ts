@@ -1,7 +1,7 @@
 import { validate } from "gerador-validador-cpf";
 import { InvalidArgumentException } from "../../dtos/Error";
 
-export class DealerValidator {
+export default class DealerValidator {
     validateEmail(email: string) {
         if (!(/\S+@\S+\.\S+/.test(email))) {
             throw new InvalidArgumentException("O email informado é inválido.");
