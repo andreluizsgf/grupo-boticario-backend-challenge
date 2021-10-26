@@ -3,16 +3,19 @@ import AuthController from '../app/controllers/AuthController';
 import DealerController from '../app/controllers/DealerController';
 import AuthMiddleware from '../app/middlewares/AuthMiddleware';
 import ErrorMiddleware from '../app/middlewares/ErrorMiddleware';
+import OrderController from '../app/controllers/OrderController'
 
 class Router {
   private dealerController;
   private authController;
+  private orderController;
   private authMiddleware;
   private errorMiddleware;
 
-  constructor(server: express.Express, dealerController: DealerController, authController: AuthController, authMiddleware: AuthMiddleware, errorMiddleware: ErrorMiddleware) {
+  constructor(server: express.Express, dealerController: DealerController, authController: AuthController, orderController: OrderController, authMiddleware: AuthMiddleware, errorMiddleware: ErrorMiddleware) {
     this.dealerController = dealerController;
     this.authController = authController;
+    this.orderController = orderController;
     this.authMiddleware = authMiddleware;
     this.errorMiddleware = errorMiddleware;
     const router = express.Router();
@@ -20,6 +23,8 @@ class Router {
     router.use('/auth/login', this.authController.login.bind(this.authController));
 
     router.post('/dealer', this.dealerController.create.bind(this.dealerController));
+
+    router.post('/order', this.orderController.create.bind(this.orderController));
 
     router.use(this.authMiddleware.handle.bind(this.authMiddleware));
 

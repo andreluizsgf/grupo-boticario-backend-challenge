@@ -1,18 +1,23 @@
 import { Knex } from "knex";
 import { v4 } from "uuid";
+import { IBaseRepository } from "../../domain/database/repositories/IBaseRepository";
 import { BaseModel } from "../../domain/entities/Base";
 import { knex } from "../knex";
 
-type Insert<T extends BaseModel> = Omit<T, "createdAt" | "updatedAt" | "id"> & {
+export type Insert<T extends BaseModel> = Omit<T, "createdAt" | "updatedAt" | "id"> & {
     id?: string
     createdAt?: Date
     updatedAt?: Date
 }
 
-type Filter<T extends BaseModel> = Partial<Omit<T, "createdAt" | "updatedAt">>;
+export type Filter<T extends BaseModel> = Partial<Omit<T, "createdAt" | "updatedAt">>;
 
-export default class BaseRepository<T extends BaseModel> {
+export default class BaseRepository<T extends BaseModel> implements IBaseRepository<T> {
     constructor(private readonly tableName: string) {}
+
+    private select() {
+        return knex<T>(this.tableName).select();
+    }
 
     async insert(item: Insert<T>) {
         const now = new Date();
@@ -33,7 +38,27 @@ export default class BaseRepository<T extends BaseModel> {
         return (await knex(this.tableName).delete('*').where({id}).first()) as T | undefined;
     }
 
-    async findOneBy(condition: Filter<T> | ((qb: Knex.QueryBuilder<T>) => unknown) = {}) {
-        return knex<T>(this.tableName).select().where(condition).first() as Promise<T | undefined>;
+    async findOneBy(condition: Filter<T>) {
+        return this.select().where(condition).first() as Promise<T | undefined>;
+    }
+
+    async paginate(currentPage = 1, perPage = 10, condition: Filter<T>) {
+        const query = this.select().where(condition).count({ count: 1 }).first();
+        const total = parseInt(((await query)?.count ?? "0").toString(), 10);
+
+        const result = (await this.select()
+            .where(condition)
+            .limit(perPage)
+            .offset((currentPage - 1) * perPage)) as T[];
+
+        return {
+            data: result,
+            pagination: {
+                currentPage,
+                lastPage: Math.ceil(total / perPage),
+                perPage,
+                total
+            }
+        };
     }
 }

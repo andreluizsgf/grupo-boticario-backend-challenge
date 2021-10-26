@@ -6,8 +6,10 @@ import { hash } from "bcrypt";
 import DealerValidator from "../../domain/common/validators/DealerValidator";
 export default class DealerService implements IDealerService {
     private dealerRepository: IDealerRepository;
+    private dealerValidator: DealerValidator;
 
-    constructor(dealerRepository: IDealerRepository) {
+    constructor(dealerRepository: IDealerRepository, dealerValidator: DealerValidator) {
+        this.dealerValidator = dealerValidator
         this.dealerRepository = dealerRepository
     }
 
@@ -18,6 +20,8 @@ export default class DealerService implements IDealerService {
             email
         });
 
+        console.log(existingUserByEmail);
+        
         if (existingUserByEmail) {
             throw new ConflictException("O email informado já está sendo utilizado.")
         }
@@ -30,7 +34,7 @@ export default class DealerService implements IDealerService {
             throw new ConflictException("O cpf informado já está sendo utilizado.")
         }
 
-        new DealerValidator().validateDealerRequest({
+        this.dealerValidator.validateDealerRequest({
             cpf,
             email,
             password

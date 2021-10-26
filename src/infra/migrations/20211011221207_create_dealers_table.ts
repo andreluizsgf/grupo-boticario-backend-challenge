@@ -8,8 +8,8 @@ export async function up(knex: Knex): Promise<void> {
         table.string("cpf").notNullable();
         table.string("email").notNullable();
         table.string("password").notNullable();
-        table.datetime("createdAt").notNullable();
-        table.datetime("updatedAt").notNullable();
+        table.datetime("created_at").notNullable();
+        table.datetime("updated_at").notNullable();
     })
 }
 

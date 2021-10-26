@@ -6,6 +6,10 @@ const config = {
     database: "postgres",
     password: "postgres",
     user: "postgres"
+  },
+  migrations: {
+    directory: "src/infra/migrations/",
+    extension: "ts"
   }
 }
 
