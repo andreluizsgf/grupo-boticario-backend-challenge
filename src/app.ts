@@ -14,10 +14,12 @@ import OrderService from './app/services/OrderService';
 import OrderRepository from './infra/repositories/OrderRepository';
 import OrderValidator from './domain/common/validators/OrderValidator';
 import { knex } from './infra/knex';
+import BoticarionApiIntegration from './infra/integrations/Boticario';
 
 export default class Application {
     private validators = this.initializeValidators();
     private repositories = this.initializeRepositories();
+    private integrations = this.initializeIntegrations();
     private services = this.initializeServices();
     private controllers = this.initializeControllers();
     private middlewares = this.initializeMiddlewares();
@@ -32,7 +34,7 @@ export default class Application {
 
     private initializeServices() {
         return {
-            dealerService: new DealerService(this.repositories.dealerRepository, this.validators.dealerValidator),
+            dealerService: new DealerService(this.repositories.dealerRepository, this.validators.dealerValidator, this.integrations.boticarionIntegration),
             authService: new AuthService(this.repositories.dealerRepository),
             orderService: new OrderService(this.repositories.orderRepository, this.repositories.dealerRepository, this.validators.orderValidator)
         };
@@ -57,6 +59,12 @@ export default class Application {
         return {
             dealerValidator: new DealerValidator(),
             orderValidator: new OrderValidator(),
+        }
+    }
+
+    private initializeIntegrations() {
+        return {
+            boticarionIntegration: new BoticarionApiIntegration()
         }
     }
 

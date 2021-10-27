@@ -37,3 +37,9 @@ export class AuthenticationException extends HttpException {
         super('AuthenticationException', message, 401);
     }
 }
+
+export class IntegrationException extends HttpException {
+    constructor(message: string) {
+        super('AuthenticationException', message, 300);
+    }
+}

@@ -15,9 +15,9 @@ export default class DealerValidator {
   }
 
   validateCpf(cpf: string) {
-    if (!validate(cpf)) {
-      throw new InvalidArgumentException("O cpf informado é inválido.");
-    };
+    // if (!validate(cpf)) {
+    //   throw new InvalidArgumentException("O cpf informado é inválido.");
+    // };
   }
 
   validateDealerRequest(args: {

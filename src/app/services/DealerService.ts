@@ -4,13 +4,17 @@ import { CreateDealerRequest } from "../../domain/dtos/DealerDto";
 import { IDealerService } from "../../domain/services/IDealerService";
 import { hash } from "bcrypt";
 import DealerValidator from "../../domain/common/validators/DealerValidator";
+import BoticarionApiIntegration from "../../infra/integrations/Boticario";
+import { Dealer } from "../../domain/entities/Dealer";
 export default class DealerService implements IDealerService {
     private dealerRepository: IDealerRepository;
     private dealerValidator: DealerValidator;
+    private boticarioIntegration: BoticarionApiIntegration
 
-    constructor(dealerRepository: IDealerRepository, dealerValidator: DealerValidator) {
+    constructor(dealerRepository: IDealerRepository, dealerValidator: DealerValidator, boticarioIntegration: BoticarionApiIntegration) {
         this.dealerValidator = dealerValidator
         this.dealerRepository = dealerRepository
+        this.boticarioIntegration = boticarioIntegration
     }
 
     async create(createDealerRequest: CreateDealerRequest) {
@@ -39,5 +43,9 @@ export default class DealerService implements IDealerService {
         });
 
         return this.dealerRepository.insert({ name, password: await hash(password, 10), email, cpf });
+    }
+
+    async getCashback(currentDealer: Dealer) {
+        return this.boticarioIntegration.getCashbackForDealer(currentDealer.cpf);
     }
 }
