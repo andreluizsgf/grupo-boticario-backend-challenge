@@ -13,6 +13,7 @@ import OrderController from './app/controllers/OrderController';
 import OrderService from './app/services/OrderService';
 import OrderRepository from './infra/repositories/OrderRepository';
 import OrderValidator from './domain/common/validators/OrderValidator';
+import { knex } from './infra/knex';
 
 export default class Application {
     private validators = this.initializeValidators();
@@ -59,7 +60,8 @@ export default class Application {
         }
     }
 
-    public start() {
+    public async start() {
+        await knex.migrate.latest();
         this.app.use(express.json());
         new Router(this.app, this.controllers.dealerController, this.controllers.authController, this.controllers.orderController, this.middlewares.authMiddleware, this.middlewares.errorMiddleware);
     }

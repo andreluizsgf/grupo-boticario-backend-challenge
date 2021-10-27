@@ -1,3 +1,4 @@
+import { PaginationResponse } from "../database/repositories/IBaseRepository";
 import { OrderStatus } from "../entities/Order";
 
 interface BaseOrderRequest {
@@ -10,14 +11,14 @@ interface BaseOrderRequest {
 export interface CreateOrderRequest extends BaseOrderRequest {}
 
 export interface ListOrdersRequest {
-    pagination: {
-        currentPage: number,
-        perPage: number
-    },
-    status?: OrderStatus,
-    dealerCpf?: string,
-    since?: Date,
-    until?: Date
+    currentPage: string,
+    perPage: string
+    status?: string,
+}
+
+export interface ListOrdersResponse {
+    pagination: PaginationResponse,
+    data: OrderResponse[]
 }
 
 export interface OrderResponse extends BaseOrderRequest {

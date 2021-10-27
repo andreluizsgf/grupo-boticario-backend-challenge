@@ -1,11 +1,11 @@
 const config = {
   client: "pg",
   connection: {
-    host: "localhost",
-    port: 5432,
-    database: "postgres",
-    password: "postgres",
-    user: "postgres"
+    host: process.env.PG_DB_HOST,
+    port: parseInt(process.env.PG_DB_PORT ?? "5432", 10),
+    database: process.env.PG_DB_NAME,
+    password: process.env.PG_DB_PASSWORD,
+    user: process.env.PG_DB_USER
   },
   migrations: {
     directory: "src/infra/migrations/",

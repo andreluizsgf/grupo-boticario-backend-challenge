@@ -19,14 +19,16 @@ class Router {
     this.authMiddleware = authMiddleware;
     this.errorMiddleware = errorMiddleware;
     const router = express.Router();
-    
+
     router.use('/auth/login', this.authController.login.bind(this.authController));
 
     router.post('/dealer', this.dealerController.create.bind(this.dealerController));
 
-    router.post('/order', this.orderController.create.bind(this.orderController));
-
     router.use(this.authMiddleware.handle.bind(this.authMiddleware));
+
+    router.post('/order', this.orderController.create.bind(this.orderController));
+    router.get('/order', this.orderController.list.bind(this.orderController));
+
 
     router.use(this.errorMiddleware.handle.bind(this.errorMiddleware));
     server.use('/', router);

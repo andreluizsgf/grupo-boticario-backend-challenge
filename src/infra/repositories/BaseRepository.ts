@@ -41,24 +41,4 @@ export default class BaseRepository<T extends BaseModel> implements IBaseReposit
     async findOneBy(condition: Filter<T>) {
         return this.select().where(condition).first() as Promise<T | undefined>;
     }
-
-    async paginate(currentPage = 1, perPage = 10, condition: Filter<T>) {
-        const query = this.select().where(condition).count({ count: 1 }).first();
-        const total = parseInt(((await query)?.count ?? "0").toString(), 10);
-
-        const result = (await this.select()
-            .where(condition)
-            .limit(perPage)
-            .offset((currentPage - 1) * perPage)) as T[];
-
-        return {
-            data: result,
-            pagination: {
-                currentPage,
-                lastPage: Math.ceil(total / perPage),
-                perPage,
-                total
-            }
-        };
-    }
 }

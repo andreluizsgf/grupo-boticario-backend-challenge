@@ -16,15 +16,15 @@ export default class AuthMiddleware {
             // virar env dps
             const payload: any = jwt.verify(jwtToken, "HS256");
 
-            const user = await this.dealerRepository.findOneBy({
+            const dealer = await this.dealerRepository.findOneBy({
                 id: payload.dealer.id
             });
 
-            if (!user) {
+            if (!dealer) {
                 throw new AuthenticationException('Acesso não autorizado.');
             }
 
-            return user;
+            return dealer;
         } catch (error) {
             if (error instanceof TokenExpiredError) {
                 throw new AuthenticationException('Token expirado.');
@@ -37,16 +37,16 @@ export default class AuthMiddleware {
     public async handle(request: express.Request, res: express.Response, next: express.NextFunction) {
         try {
             const authHeader = request.headers.authorization;
-    
+
             if (!authHeader) {
                 throw new AuthenticationException('Acesso não autorizado.');
             }
-    
+
             const jwtToken = authHeader.split('Bearer ')[1];
-    
-            await this.authenticate(jwtToken);
-    
-            await next();
+
+            res.locals.currentDealer  = await this.authenticate(jwtToken);
+
+            next();
         } catch (error) {
             next(error);
         }

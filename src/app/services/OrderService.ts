@@ -5,6 +5,8 @@ import { IOrderService } from "../../domain/services/IOrderService";
 import { hash } from "bcrypt";
 import OrderValidator from "../../domain/common/validators/OrderValidator";
 import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
+import { Dealer } from "../../domain/entities/Dealer";
+import { OrderStatus } from "../../domain/entities/Order";
 
 export default class OrderService implements IOrderService {
     private orderRepository: IOrderRepository;
@@ -17,14 +19,15 @@ export default class OrderService implements IOrderService {
         this.orderValidator = orderValidator;
     }
 
-    async create(createOrderRequest: CreateOrderRequest) {
+    async create(currentDealer: Dealer, createOrderRequest: CreateOrderRequest) {
         const { code, date, dealerCpf, subtotal } = createOrderRequest
 
         this.orderValidator.validateOrderRequest({
             code,
             date,
             dealerCpf,
-            subtotal
+            subtotal,
+            currentDealer
         });
 
         const existingOrder = await this.orderRepository.findOneBy({
@@ -43,26 +46,47 @@ export default class OrderService implements IOrderService {
             throw new NotFoundException("O revendedor informado não existe.");
         }
 
-        const total = await this.orderRepository.getTotalForDealer(dealerCpf);
+        const { value } = await this.orderRepository.getTotalForDealer(dealerCpf);
 
-        return this.orderRepository.insert({ 
-            dealerCpf, 
-            subtotal, 
-            code, 
+        const cashbackPercentage = this.getCashbackPercentage(value);
+
+        return this.orderRepository.insert({
+            dealerCpf,
+            subtotal,
+            code,
             date,
-            cashbackPercentage: 1,
-            cashbackValueInCents: 2,
-            status: "Validating"
+            dealerId: dealer.id,
+            cashbackPercentage,
+            cashbackValueInCents: Math.round((subtotal * cashbackPercentage) / 100),
+            status: dealerCpf === process.env.SPECIAL_DEALER_CPF ? "approved" : "validating"
         });
     }
 
-    // async list(listOrdersRequest: ListOrdersRequest) {
-    //     const { pagination, status, since, dealerCpf, until } = listOrdersRequest;
-    //     const { currentPage, perPage } = pagination;
+    async list(currentDealer: Dealer, listOrdersRequest: ListOrdersRequest) {
+        const { perPage, currentPage, status } = listOrdersRequest;
 
-    //     return this.orderRepository.paginate(currentPage, perPage, {
-    //         status,
-    //         dealerCpf,
-    //     })
-    // }
+        this.orderValidator.validateListOrdersRequest({
+            currentPage: parseInt(currentPage),
+            perPage: parseInt(perPage),
+            status
+        });
+
+        return this.orderRepository.paginateA(
+            currentPage,
+            perPage,
+            currentDealer.id,
+            status as OrderStatus
+        )
+    }
+
+    getCashbackPercentage(orderValueAccumulated: number) {
+        switch (true) {
+            case (orderValueAccumulated <= 100000):
+                return 10;
+            case (orderValueAccumulated <= 150000):
+                return 15;
+            default:
+                return 20;
+        }
+    }
 }

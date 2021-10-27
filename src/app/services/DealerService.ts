@@ -20,8 +20,6 @@ export default class DealerService implements IDealerService {
             email
         });
 
-        console.log(existingUserByEmail);
-        
         if (existingUserByEmail) {
             throw new ConflictException("O email informado já está sendo utilizado.")
         }
