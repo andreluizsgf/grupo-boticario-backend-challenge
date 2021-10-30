@@ -1,6 +1,6 @@
-import { Filter, Insert } from '../../../infra/repositories/BaseRepository';
-import { Order, OrderStatus } from '../../entities/Order';
-import { IBaseRepository, PaginationResponse } from './IBaseRepository';
+import { Filter, Insert, PaginationResult } from "../../../infra/repositories/BaseRepository";
+import { Order, OrderStatus } from "../../entities/Order";
+import { IBaseRepository } from "./IBaseRepository";
 
 export interface IOrderRepository extends IBaseRepository<Order> {
   insert(order: Insert<Order>): Promise<Order>;
@@ -11,6 +11,6 @@ export interface IOrderRepository extends IBaseRepository<Order> {
     currentPage: number,
     dealerId: string,
     status?: OrderStatus
-  ): Promise<{ data: Order[]; pagination: PaginationResponse }>;
+  ): Promise<PaginationResult<Order>>;
   getTotalForDealer(dealerCpf: string): Promise<{ value: number }>;
 }

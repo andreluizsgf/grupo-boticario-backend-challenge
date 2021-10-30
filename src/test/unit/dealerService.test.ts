@@ -1,12 +1,12 @@
-import DealerService from '../../app/services/DealerService';
-import DealerValidator from '../../domain/common/validators/DealerValidator';
-import BoticarionApiIntegration from '../../infra/integrations/BoticarioApiIntegration';
-import DealerRepository from '../../infra/repositories/DealerRepository';
-import sinon from 'sinon';
-import { mockDbDealer, mockDealerRequest } from '../mocks/dealer';
-import { ConflictException } from '../../domain/dtos/Error';
-import Sinon from 'sinon';
-import faker from 'faker';
+import DealerService from "../../app/services/DealerService";
+import DealerValidator from "../../domain/common/validators/DealerValidator";
+import BoticarionApiIntegration from "../../infra/integrations/BoticarioApiIntegration";
+import DealerRepository from "../../infra/repositories/DealerRepository";
+import sinon from "sinon";
+import { mockDbDealer, mockDealerRequest } from "../mocks/dealer";
+import { ConflictException } from "../../domain/dtos/Error";
+import Sinon from "sinon";
+import faker from "faker";
 
 const sandbox: Sinon.SinonSandbox = sinon.createSandbox();
 
@@ -19,54 +19,59 @@ beforeEach(() => {
   sandbox.restore();
 });
 
-describe('Dealer Service', () => {
-  describe('create', () => {
-    test('Should create a dealer.', async () => {
+describe("Dealer Service", () => {
+  describe("create", () => {
+    test("Should create a dealer.", async () => {
       const mockDealer = mockDealerRequest();
       const dbDealer = mockDbDealer(mockDealer);
 
-      sandbox.stub(DealerRepository.prototype, 'insert').returns(Promise.resolve(dbDealer));
-      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
+      sandbox.stub(DealerRepository.prototype, "insert").returns(Promise.resolve(dbDealer));
+      sandbox.stub(DealerRepository.prototype, "findOneBy").returns(Promise.resolve(undefined));
 
       const createdDealer = await dealerService.create(mockDealer);
 
       expect(createdDealer).toMatchObject(dbDealer);
     });
 
-    test('Should throw error when email is already in use.', async () => {
+    test("Should throw error when email is already in use.", async () => {
       const mockDealer = mockDealerRequest();
       const dbDealer = mockDbDealer({
         email: mockDealer.email,
       });
 
-      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(dbDealer));
+      sandbox.stub(DealerRepository.prototype, "findOneBy").returns(Promise.resolve(dbDealer));
 
       const act = dealerService.create(mockDealer);
 
-      expect(act).rejects.toThrowError('O email informado já está sendo utilizado.');
+      expect(act).rejects.toThrowError("O email informado já está sendo utilizado.");
       expect(act).rejects.toBeInstanceOf(ConflictException);
     });
 
-    test('Should throw error when cpf is already in use.', async () => {
+    test("Should throw error when cpf is already in use.", async () => {
       const mockDealer = mockDealerRequest();
       const dbDealer = mockDbDealer({
         cpf: mockDealer.cpf,
       });
 
-      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(dbDealer));
+      sandbox
+        .stub(DealerRepository.prototype, "findOneBy")
+        .withArgs({
+          cpf: mockDealer.cpf,
+        })
+        .returns(Promise.resolve(dbDealer));
 
       const act = dealerService.create(mockDealer);
 
-      expect(act).rejects.toThrowError('O cpf informado já está sendo utilizado.');
+      expect(act).rejects.toThrowError("O cpf informado já está sendo utilizado.");
       expect(act).rejects.toBeInstanceOf(ConflictException);
     });
   });
 
-  describe('getCashbackCredit', () => {
-    test('Should get cashback credit for dealer.', async () => {
+  describe("getCashbackCredit", () => {
+    test("Should get cashback credit for dealer.", async () => {
       const expectedCashbackCredit = faker.datatype.number();
 
-      sandbox.stub(BoticarionApiIntegration.prototype, 'getCashbackCreditForDealer').returns(
+      sandbox.stub(BoticarionApiIntegration.prototype, "getCashbackCreditForDealer").returns(
         Promise.resolve({
           credit: expectedCashbackCredit,
         })

@@ -10,36 +10,36 @@ export class HttpException extends Error {
 
 export default class NotFoundException extends HttpException {
   constructor(message: string) {
-    super('NotFoundException', message, 404);
+    super("NotFoundException", message, 404);
   }
 }
 
 export class InvalidArgumentException extends HttpException {
   constructor(message: string) {
-    super('InvalidArgumentException', message, 400);
+    super("InvalidArgumentException", message, 400);
   }
 }
 
 export class InternalErrorException extends HttpException {
   constructor(message: string) {
-    super('InternalErrorException', message, 500);
+    super("InternalErrorException", message, 500);
   }
 }
 
 export class ConflictException extends HttpException {
   constructor(message: string) {
-    super('ConflictException', message, 409);
+    super("ConflictException", message, 409);
   }
 }
 
 export class AuthenticationException extends HttpException {
   constructor(message: string) {
-    super('AuthenticationException', message, 401);
+    super("AuthenticationException", message, 401);
   }
 }
 
 export class IntegrationException extends HttpException {
   constructor(message: string) {
-    super('AuthenticationException', message, 300);
+    super("AuthenticationException", message, 300);
   }
 }

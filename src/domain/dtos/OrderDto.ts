@@ -1,5 +1,5 @@
-import { PaginationResponse } from '../database/repositories/IBaseRepository';
-import { OrderStatus } from '../entities/Order';
+import { OrderStatus } from "../entities/Order";
+import { PaginationResponse } from "./Common";
 
 interface BaseOrderRequest {
   code: string;
@@ -12,8 +12,8 @@ export interface CreateOrderRequest extends BaseOrderRequest {
 }
 
 export interface ListOrdersRequest {
-  currentPage: string;
-  perPage: string;
+  currentPage: number;
+  perPage: number;
   status?: string;
 }
 

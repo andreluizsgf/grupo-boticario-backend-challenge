@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable unused-imports/no-unused-vars */
-import express from 'express';
-import { HttpException } from '../../domain/dtos/Error';
+import express from "express";
+import { HttpException } from "../../domain/dtos/Error";
 
 export default class ErrorMiddleware {
   async handle(
@@ -16,6 +16,6 @@ export default class ErrorMiddleware {
 
     console.log(error);
 
-    return res.send({ error: 'Erro interno.' }).status(500);
+    return res.send({ error: "Erro interno." }).status(500);
   }
 }

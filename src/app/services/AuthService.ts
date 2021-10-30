@@ -1,9 +1,9 @@
-import { IDealerRepository } from '../../domain/database/repositories/IDealerRepository';
-import { LoginRequest } from '../../domain/dtos/AuthDto';
-import { IAuthService } from '../../domain/services/IAuthService';
-import { compare } from 'bcrypt';
-import NotFoundException from '../../domain/dtos/Error';
-import jwt from 'jsonwebtoken';
+import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
+import { LoginRequest } from "../../domain/dtos/AuthDto";
+import { IAuthService } from "../../domain/services/IAuthService";
+import { compare } from "bcrypt";
+import NotFoundException from "../../domain/dtos/Error";
+import jwt from "jsonwebtoken";
 
 export default class AuthService implements IAuthService {
   private dealerRepository: IDealerRepository;
@@ -20,9 +20,9 @@ export default class AuthService implements IAuthService {
     });
 
     if (!dealer || !(await compare(password, dealer.password))) {
-      throw new NotFoundException('Dados de login inválidos.');
+      throw new NotFoundException("Dados de login inválidos.");
     }
 
-    return jwt.sign({ dealer: dealer }, 'HS256', { expiresIn: '7d' });
+    return jwt.sign({ dealer: dealer }, "HS256", { expiresIn: "7d" });
   }
 }

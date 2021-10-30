@@ -1,5 +1,5 @@
 {
-  "name": "typescript-express-boilerplate",
+  "name": "grupo-boticario-backend-challenge",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,9 +12,9 @@
     "migration:create": "knex migrate:make",
     "migration:run": "knex migrate:latest",
     "eslint:fix": "eslint --fix . --ext=.ts",
-    "migration:rollback": "knex migrate:rollback",
     "prettier:fix": "prettier --write '**/*.{ts, yml}'",
     "prettier:check": "prettier --check '**/*.{ts, yml}'",
+    "migration:rollback": "knex migrate:rollback",
     "database:create": "docker exec postgresDB psql -U postgres postgres -c \"CREATE DATABASE $(grep PG_DB_NAME .env | cut -d= -f 2)\""
   },
   "keywords": [],
@@ -54,6 +54,7 @@
     "@typescript-eslint/parser": "^5.2.0",
     "axios-mock-adapter": "^1.20.0",
     "eslint": "^8.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unused-imports": "^1.1.5",
     "jest": "^27.2.5",
     "prettier": "^2.4.1",

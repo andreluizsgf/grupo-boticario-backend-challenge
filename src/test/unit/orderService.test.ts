@@ -1,13 +1,13 @@
-import OrderService from '../../app/services/OrderService';
-import OrderValidator from '../../domain/common/validators/OrderValidator';
-import OrderRepository from '../../infra/repositories/OrderRepository';
-import sinon from 'sinon';
-import { mockDbOrder, mockOrderRequest } from '../mocks/order';
-import { ConflictException } from '../../domain/dtos/Error';
-import Sinon from 'sinon';
-import faker from 'faker';
-import DealerRepository from '../../infra/repositories/DealerRepository';
-import { mockDbDealer } from '../mocks/dealer';
+import OrderService from "../../app/services/OrderService";
+import OrderValidator from "../../domain/common/validators/OrderValidator";
+import OrderRepository from "../../infra/repositories/OrderRepository";
+import sinon from "sinon";
+import { mockDbOrder, mockOrderRequest } from "../mocks/order";
+import NotFoundException, { ConflictException } from "../../domain/dtos/Error";
+import Sinon from "sinon";
+import faker from "faker";
+import DealerRepository from "../../infra/repositories/DealerRepository";
+import { mockDbDealer } from "../mocks/dealer";
 
 const sandbox: Sinon.SinonSandbox = sinon.createSandbox();
 
@@ -20,9 +20,9 @@ beforeEach(() => {
   sandbox.restore();
 });
 
-describe('Order Service', () => {
-  describe('create', () => {
-    test('Should create a order', async () => {
+describe("Order Service", () => {
+  describe("create", () => {
+    test("Should create a order", async () => {
       const mockOrder = mockOrderRequest();
       const dbOrder = mockDbOrder({
         ...mockOrder,
@@ -30,42 +30,42 @@ describe('Order Service', () => {
       });
       const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
 
-      sandbox.stub(OrderRepository.prototype, 'insert').returns(Promise.resolve(dbOrder));
-      sandbox.stub(OrderRepository.prototype, 'getTotalForDealer').returns(
+      sandbox.stub(OrderRepository.prototype, "insert").returns(Promise.resolve(dbOrder));
+      sandbox.stub(OrderRepository.prototype, "getTotalForDealer").returns(
         Promise.resolve({
           value: mockOrder.subtotal,
         })
       );
-      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(dbDealer));
-      sandbox.stub(OrderRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
+      sandbox.stub(DealerRepository.prototype, "findOneBy").returns(Promise.resolve(dbDealer));
+      sandbox.stub(OrderRepository.prototype, "findOneBy").returns(Promise.resolve(undefined));
 
       const createdOrder = await orderService.create(dbDealer, mockOrder);
 
       expect(createdOrder).toMatchObject(dbOrder);
     });
 
-    test('should throw error when code is already used.', async () => {
+    test("Should throw error when code is already used.", async () => {
       const mockOrder = mockOrderRequest();
       const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
 
       sandbox
-        .stub(OrderRepository.prototype, 'findOneBy')
+        .stub(OrderRepository.prototype, "findOneBy")
         .withArgs({ code: mockOrder.code })
         .returns(Promise.resolve(mockDbOrder()));
 
       const act = orderService.create(dbDealer, mockOrder);
 
-      expect(act).rejects.toThrowError('Já existe um pedido com o código informado.');
+      expect(act).rejects.toThrowError("Já existe um pedido com o código informado.");
       expect(act).rejects.toBeInstanceOf(ConflictException);
     });
 
-    test('should throw error when dealer cpf does not exist.', async () => {
+    test("Should throw error when dealer cpf does not exist.", async () => {
       const mockOrder = mockOrderRequest();
       const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
 
-      sandbox.stub(OrderRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
-      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
-      sandbox.stub(OrderRepository.prototype, 'getTotalForDealer').returns(
+      sandbox.stub(OrderRepository.prototype, "findOneBy").returns(Promise.resolve(undefined));
+      sandbox.stub(DealerRepository.prototype, "findOneBy").returns(Promise.resolve(undefined));
+      sandbox.stub(OrderRepository.prototype, "getTotalForDealer").returns(
         Promise.resolve({
           value: mockOrder.subtotal,
         })
@@ -73,19 +73,19 @@ describe('Order Service', () => {
 
       const act = orderService.create(dbDealer, mockOrder);
 
-      expect(act).rejects.toThrowError('O revendedor informado não existe.');
-      expect(act).rejects.toBeInstanceOf(ConflictException);
+      expect(act).rejects.toThrowError("O revendedor informado não existe.");
+      expect(act).rejects.toBeInstanceOf(NotFoundException);
     });
   });
 
-  describe('list', () => {
-    test('should list all created orders for dealer', async () => {
+  describe("list", () => {
+    test("Should list all created orders for dealer", async () => {
       const dbDealer = mockDbDealer();
       const dbOrder = mockDbOrder();
       const currentPage = 1;
       const perPage = 1;
 
-      sandbox.stub(OrderRepository.prototype, 'paginate').returns(
+      sandbox.stub(OrderRepository.prototype, "paginate").returns(
         Promise.resolve({
           data: [dbOrder],
           pagination: {
@@ -98,8 +98,8 @@ describe('Order Service', () => {
       );
 
       const listedOrders = await orderService.list(dbDealer, {
-        perPage: '1',
-        currentPage: '1',
+        perPage: 1,
+        currentPage: 1,
       });
 
       expect(listedOrders.data).toContainEqual(dbOrder);
@@ -112,8 +112,8 @@ describe('Order Service', () => {
     });
   });
 
-  describe('getCashbackPercentage', () => {
-    test('should get correct cashback percentage.', () => {
+  describe("getCashbackPercentage", () => {
+    test("Should get correct cashback percentage.", () => {
       const orderValueAccumulated = faker.datatype.number();
       const cashbackPercentage = orderService.getCashbackPercentage(orderValueAccumulated);
 

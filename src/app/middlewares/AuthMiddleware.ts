@@ -1,8 +1,8 @@
-import express from 'express';
-import { TokenExpiredError } from 'jsonwebtoken';
-import { AuthenticationException, InternalErrorException } from '../../domain/dtos/Error';
-import jwt from 'jsonwebtoken';
-import { IDealerRepository } from '../../domain/database/repositories/IDealerRepository';
+import express from "express";
+import { TokenExpiredError } from "jsonwebtoken";
+import { AuthenticationException, InternalErrorException } from "../../domain/dtos/Error";
+import jwt from "jsonwebtoken";
+import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
 
 export default class AuthMiddleware {
   private dealerRepository: IDealerRepository;
@@ -14,8 +14,8 @@ export default class AuthMiddleware {
   protected async authenticate(jwtToken: string) {
     try {
       if (!process.env.JWT_SECRET) {
-        console.log('As variável JWT_SECRET não foi definida');
-        throw new InternalErrorException('Erro interno');
+        console.log("As variável JWT_SECRET não foi definida");
+        throw new InternalErrorException("Erro interno");
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,16 +26,16 @@ export default class AuthMiddleware {
       });
 
       if (!dealer) {
-        throw new AuthenticationException('Acesso não autorizado.');
+        throw new AuthenticationException("Acesso não autorizado.");
       }
 
       return dealer;
     } catch (error) {
       if (error instanceof TokenExpiredError) {
-        throw new AuthenticationException('Token expirado.');
+        throw new AuthenticationException("Token expirado.");
       }
 
-      throw new AuthenticationException('Acesso não autorizado.');
+      throw new AuthenticationException("Acesso não autorizado.");
     }
   }
 
@@ -44,10 +44,10 @@ export default class AuthMiddleware {
       const authHeader = request.headers.authorization;
 
       if (!authHeader) {
-        throw new AuthenticationException('É necessário informar um token de autenticação.');
+        throw new AuthenticationException("É necessário informar um token de autenticação.");
       }
 
-      const jwtToken = authHeader.split('Bearer ')[1];
+      const jwtToken = authHeader.split("Bearer ")[1];
 
       res.locals.currentDealer = await this.authenticate(jwtToken);
 

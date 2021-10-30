@@ -1,18 +1,17 @@
-import { PaginationResponse } from '../../domain/database/repositories/IBaseRepository';
-import { IOrderRepository } from '../../domain/database/repositories/IOrderRepository';
-import { Order, OrderStatus } from '../../domain/entities/Order';
-import { knex } from '../knex';
-import BaseRepository from './BaseRepository';
+import { IOrderRepository } from "../../domain/database/repositories/IOrderRepository";
+import { Order, OrderStatus } from "../../domain/entities/Order";
+import { knex } from "../knex";
+import BaseRepository, { PaginationResult } from "./BaseRepository";
 
 export default class OrderRepository extends BaseRepository<Order> implements IOrderRepository {
   constructor() {
-    super('orders');
+    super("orders");
   }
 
   async getTotalForDealer(dealerCpf: string): Promise<{ value: number }> {
-    return await knex('orders as o')
+    return await knex("orders as o")
       .select(knex.raw('COALESCE(SUM("subtotal"), 0) as value'))
-      .where('o.dealer_cpf', dealerCpf)
+      .where("o.dealer_cpf", dealerCpf)
       .first();
   }
 
@@ -21,11 +20,11 @@ export default class OrderRepository extends BaseRepository<Order> implements IO
     perPage = 10,
     dealerId: string,
     status: OrderStatus
-  ): Promise<{ data: Order[]; pagination: PaginationResponse }> {
-    const query = knex('orders as o').select('*').where('dealer_id', dealerId);
+  ): Promise<PaginationResult<Order>> {
+    const query = knex("orders as o").select("*").where("dealer_id", dealerId);
 
     if (status) {
-      query.where('status', status);
+      query.where("status", status);
     }
 
     return query.paginate({

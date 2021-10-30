@@ -1,11 +1,11 @@
-import { IOrderRepository } from '../../domain/database/repositories/IOrderRepository';
-import NotFoundException, { ConflictException } from '../../domain/dtos/Error';
-import { CreateOrderRequest, ListOrdersRequest } from '../../domain/dtos/OrderDto';
-import { IOrderService } from '../../domain/services/IOrderService';
-import OrderValidator from '../../domain/common/validators/OrderValidator';
-import { IDealerRepository } from '../../domain/database/repositories/IDealerRepository';
-import { Dealer } from '../../domain/entities/Dealer';
-import { OrderStatus } from '../../domain/entities/Order';
+import { IOrderRepository } from "../../domain/database/repositories/IOrderRepository";
+import NotFoundException, { ConflictException } from "../../domain/dtos/Error";
+import { CreateOrderRequest, ListOrdersRequest } from "../../domain/dtos/OrderDto";
+import { IOrderService } from "../../domain/services/IOrderService";
+import OrderValidator from "../../domain/common/validators/OrderValidator";
+import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
+import { Dealer } from "../../domain/entities/Dealer";
+import { OrderStatus } from "../../domain/entities/Order";
 
 export default class OrderService implements IOrderService {
   private orderRepository: IOrderRepository;
@@ -38,7 +38,7 @@ export default class OrderService implements IOrderService {
     });
 
     if (existingOrder) {
-      throw new ConflictException('Já existe um pedido com o código informado.');
+      throw new ConflictException("Já existe um pedido com o código informado.");
     }
 
     const dealer = await this.dealerRepository.findOneBy({
@@ -46,7 +46,7 @@ export default class OrderService implements IOrderService {
     });
 
     if (!dealer) {
-      throw new NotFoundException('O revendedor informado não existe.');
+      throw new NotFoundException("O revendedor informado não existe.");
     }
 
     const { value } = await this.orderRepository.getTotalForDealer(dealerCpf);
@@ -61,7 +61,7 @@ export default class OrderService implements IOrderService {
       dealerId: dealer.id,
       cashbackPercentage,
       cashbackValueInCents: Math.round((subtotal * cashbackPercentage) / 100),
-      status: dealerCpf === process.env.SPECIAL_DEALER_CPF ? 'approved' : 'validating',
+      status: dealerCpf === process.env.SPECIAL_DEALER_CPF ? "approved" : "validating",
     });
   }
 
@@ -69,14 +69,14 @@ export default class OrderService implements IOrderService {
     const { perPage, currentPage, status } = listOrdersRequest;
 
     this.orderValidator.validateListOrdersRequest({
-      currentPage: parseInt(currentPage),
-      perPage: parseInt(perPage),
+      currentPage,
+      perPage,
       status,
     });
 
     return this.orderRepository.paginate(
-      parseInt(currentPage),
-      parseInt(perPage),
+      currentPage,
+      perPage,
       currentDealer.id,
       status as OrderStatus
     );

@@ -1,6 +1,6 @@
-import { BaseModel } from './Base';
+import { BaseModel } from "./Base";
 
-export const ORDER_STATUS = ['approved', 'validating'] as const;
+export const ORDER_STATUS = ["approved", "validating"] as const;
 type OrderStatusTuple = typeof ORDER_STATUS;
 export type OrderStatus = OrderStatusTuple[number];
 

@@ -1,20 +1,20 @@
-import express from 'express';
-import AuthController from './app/controllers/AuthController';
-import DealerController from './app/controllers/DealerController';
-import AuthMiddleware from './app/middlewares/AuthMiddleware';
-import ErrorMiddleware from './app/middlewares/ErrorMiddleware';
-import AuthService from './app/services/AuthService';
-import DealerService from './app/services/DealerService';
-import DealerRepository from './infra/repositories/DealerRepository';
-import Router from './routes/routes';
-import { Express } from 'express';
-import DealerValidator from './domain/common/validators/DealerValidator';
-import OrderController from './app/controllers/OrderController';
-import OrderService from './app/services/OrderService';
-import OrderRepository from './infra/repositories/OrderRepository';
-import OrderValidator from './domain/common/validators/OrderValidator';
-import { knex } from './infra/knex';
-import BoticarionApiIntegration from './infra/integrations/BoticarioApiIntegration';
+import express from "express";
+import AuthController from "./app/controllers/AuthController";
+import DealerController from "./app/controllers/DealerController";
+import AuthMiddleware from "./app/middlewares/AuthMiddleware";
+import ErrorMiddleware from "./app/middlewares/ErrorMiddleware";
+import AuthService from "./app/services/AuthService";
+import DealerService from "./app/services/DealerService";
+import DealerRepository from "./infra/repositories/DealerRepository";
+import Router from "./routes/routes";
+import { Express } from "express";
+import DealerValidator from "./domain/common/validators/DealerValidator";
+import OrderController from "./app/controllers/OrderController";
+import OrderService from "./app/services/OrderService";
+import OrderRepository from "./infra/repositories/OrderRepository";
+import OrderValidator from "./domain/common/validators/OrderValidator";
+import { knex } from "./infra/knex";
+import BoticarionApiIntegration from "./infra/integrations/BoticarioApiIntegration";
 
 export default class Application {
   private validators = this.initializeValidators();
