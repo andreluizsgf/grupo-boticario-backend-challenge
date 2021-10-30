@@ -23,7 +23,17 @@ export default class DealerController {
 
             const dealer = await this.dealerService.create({ name, email, cpf, password });
 
-            return res.status(201).send({dealer});
+            const response: DealerResponse = {
+                cpf: dealer.cpf,
+                createdAt: dealer.createdAt,
+                email: dealer.email,
+                id: dealer.id,
+                name: dealer.name,
+                updatedAt: dealer.updatedAt
+            };
+
+
+            return res.status(201).send(response);
         } catch (error) {
             next(error)
         }

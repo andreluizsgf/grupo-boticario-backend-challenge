@@ -2,12 +2,12 @@ import OrderService from "../../app/services/OrderService";
 import OrderValidator from "../../domain/common/validators/OrderValidator";
 import OrderRepository from "../../infra/repositories/OrderRepository";
 import sinon from "sinon";
-import { mockDbOrder, mockOrderRequest } from "./mocks/order";
+import { mockDbOrder, mockOrderRequest } from "../mocks/order";
 import { ConflictException } from "../../domain/dtos/Error";
 import Sinon from "sinon";
 import faker from "faker";
 import DealerRepository from "../../infra/repositories/DealerRepository";
-import { mockDbDealer } from "./mocks/dealer";
+import { mockDbDealer } from "../mocks/dealer";
 
 const sandbox: Sinon.SinonSandbox = sinon.createSandbox();
 
@@ -22,9 +22,12 @@ beforeEach(() => {
 
 describe("Order Service", () => {
     describe("create", () => {
-        test("should create a order", async () => {
+        test("Should create a order", async () => {
             const mockOrder = mockOrderRequest();
-            const dbOrder = mockDbOrder(mockOrder);
+            const dbOrder = mockDbOrder({
+                ...mockOrder,
+                date: new Date(mockOrder.date)
+            });
             const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
 
             sandbox.stub(OrderRepository.prototype, "insert").returns(Promise.resolve(dbOrder))

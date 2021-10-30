@@ -1,6 +1,6 @@
 import DealerRepository from "../../infra/repositories/DealerRepository";
 import sinon from "sinon";
-import { mockDbDealer, mockDealerRequest } from "./mocks/dealer";
+import { mockDbDealer, mockDealerRequest } from "../mocks/dealer";
 import Sinon from "sinon";
 import AuthService from "../../app/services/AuthService";
 import { hash } from "bcrypt";
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe("Dealer Service", () => {
     describe("login", () => {
-        test("should return an access token when login succeed", async () => {
+        test("Should generate a valid access token when dealer credentials are correct.", async () => {
             const password = faker.internet.password();
             const dbDealer = mockDbDealer({
                 password: await hash(password, 10)
@@ -34,7 +34,7 @@ describe("Dealer Service", () => {
             expect(accessToken).toBeDefined();
         });
 
-        test("should throw error when dealer email or password are incorrect", async () => {
+        test("Should throw error when dealer email or password are incorrect", async () => {
             sandbox.stub(DealerRepository.prototype, "findOneBy").returns(Promise.resolve(undefined))
 
             const act = authService.login({

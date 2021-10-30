@@ -45,7 +45,7 @@ export default class OrderService implements IOrderService {
         if (!dealer) {
             throw new NotFoundException("O revendedor informado não existe.");
         }
-        
+
         const { value } = await this.orderRepository.getTotalForDealer(dealerCpf);
 
         const cashbackPercentage = this.getCashbackPercentage(value);
@@ -54,7 +54,7 @@ export default class OrderService implements IOrderService {
             dealerCpf,
             subtotal,
             code,
-            date,
+            date: new Date(date),
             dealerId: dealer.id,
             cashbackPercentage,
             cashbackValueInCents: Math.round((subtotal * cashbackPercentage) / 100),

@@ -1,3 +1,4 @@
+import { isValid } from "date-fns";
 import { validate } from "gerador-validador-cpf";
 import { InvalidArgumentException } from "../../dtos/Error";
 import { Dealer } from "../../entities/Dealer";
@@ -10,10 +11,8 @@ export default class OrderValidator {
     }
   }
 
-  validateDate(date: Date) {
-    try {
-      new Date(date);
-    } catch (error) {
+  validateDate(date: string) {
+    if (!isValid(new Date(date))) {
       throw new InvalidArgumentException("Informe uma data no formato correto. YYYY-mm-dd hh:mm:ss");
     }
 
@@ -48,7 +47,7 @@ export default class OrderValidator {
   validateOrderRequest(args: {
     dealerCpf: string;
     code: string;
-    date: Date;
+    date: string;
     subtotal: number;
     currentDealer: Dealer
   }) {

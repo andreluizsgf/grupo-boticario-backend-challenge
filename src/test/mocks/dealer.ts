@@ -1,8 +1,8 @@
-import { Dealer } from "../../../domain/entities/Dealer";
+import { Dealer } from "../../domain/entities/Dealer";
 import { generate } from "gerador-validador-cpf";
 import { v4 } from "uuid"
 import faker from "faker";
-import { CreateDealerRequest } from "../../../domain/dtos/DealerDto";
+import { CreateDealerRequest } from "../../domain/dtos/DealerDto";
 import jwt from 'jsonwebtoken';
 import { hash } from "bcrypt";
 

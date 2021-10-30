@@ -3,7 +3,7 @@ import { LoginRequest } from "../../domain/dtos/AuthDto";
 import { IAuthService } from "../../domain/services/IAuthService";
 import { compare } from "bcrypt";
 import NotFoundException from "../../domain/dtos/Error";
-import jwt, { TokenExpiredError } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 export default class AuthService implements IAuthService {
     private dealerRepository: IDealerRepository;

@@ -4,7 +4,7 @@ interface BoticarioBodyResponse {
     credit: number
 }
 
-interface BoticarioResponse {
+export interface BoticarioResponse {
     statusCode: number,
     body: BoticarioBodyResponse
 }
@@ -16,7 +16,7 @@ export default class BoticarionApiIntegration {
 
     async getCashbackCreditForDealer(dealerCpf: string): Promise<BoticarioBodyResponse> {
         const { data, status, statusText } = await this.boticarioClient.get<BoticarioResponse>(
-            `/cashback?cpf=${dealerCpf}`
+            `/cashback?cpf=12345`
         );
 
         if (status !== 200) {

@@ -4,11 +4,12 @@ import { OrderStatus } from "../entities/Order";
 interface BaseOrderRequest {
     code: string
     dealerCpf: string
-    date: Date
     subtotal: number
 }
 
-export interface CreateOrderRequest extends BaseOrderRequest {}
+export interface CreateOrderRequest extends BaseOrderRequest {
+    date: string
+}
 
 export interface ListOrdersRequest {
     currentPage: string,
@@ -26,6 +27,7 @@ export interface OrderResponse extends BaseOrderRequest {
     status: OrderStatus
     cashbackPercentage: number
     cashbackValueInCents: number
+    date: Date
     createdAt: Date
     updatedAt: Date
 }

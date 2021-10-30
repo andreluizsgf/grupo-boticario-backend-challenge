@@ -3,7 +3,7 @@ import DealerValidator from "../../domain/common/validators/DealerValidator";
 import BoticarionApiIntegration from "../../infra/integrations/BoticarioApiIntegration";
 import DealerRepository from "../../infra/repositories/DealerRepository";
 import sinon from "sinon";
-import { mockDbDealer, mockDealerRequest } from "./mocks/dealer";
+import { mockDbDealer, mockDealerRequest } from "../mocks/dealer";
 import { ConflictException } from "../../domain/dtos/Error";
 import Sinon from "sinon";
 import faker from "faker";
@@ -21,8 +21,7 @@ beforeEach(() => {
 
 describe("Dealer Service", () => {
     describe("create", () => {
-
-        test("should create a dealer", async () => {
+        test("Should create a dealer.", async () => {
             const mockDealer = mockDealerRequest();
             const dbDealer = mockDbDealer(mockDealer);
     
@@ -34,7 +33,7 @@ describe("Dealer Service", () => {
             expect(createdDealer).toMatchObject(dbDealer);
         });
     
-        test("should throw error when email is already used.", async () => {
+        test("Should throw error when email is already in use.", async () => {
             const mockDealer = mockDealerRequest();
             const dbDealer = mockDbDealer({
                 email: mockDealer.email
@@ -48,21 +47,7 @@ describe("Dealer Service", () => {
             expect(act).rejects.toBeInstanceOf(ConflictException);
         });
     
-        test("should throw error when cpf is already used.", async () => {
-            const mockDealer = mockDealerRequest();
-            const dbDealer = mockDbDealer({
-                cpf: mockDealer.cpf
-            });
-    
-            sandbox.stub(DealerRepository.prototype, "findOneBy").returns(Promise.resolve(dbDealer))
-    
-            const act = dealerService.create(mockDealer);
-    
-            expect(act).rejects.toThrowError("O cpf informado já está sendo utilizado.");
-            expect(act).rejects.toBeInstanceOf(ConflictException);
-        });
-    
-        test("should throw error when cpf is already used.", async () => {
+        test("Should throw error when cpf is already in use.", async () => {
             const mockDealer = mockDealerRequest();
             const dbDealer = mockDbDealer({
                 cpf: mockDealer.cpf
@@ -78,7 +63,7 @@ describe("Dealer Service", () => {
     });
 
     describe("getCashbackCredit", () => {
-        test("should get cashback credit for dealer", async () => {
+        test("Should get cashback credit for dealer.", async () => {
             const expectedCashbackCredit = faker.datatype.number();
 
             sandbox.stub(BoticarionApiIntegration.prototype, "getCashbackCreditForDealer").returns(Promise.resolve({

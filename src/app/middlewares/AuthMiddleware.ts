@@ -1,6 +1,6 @@
 import express from "express";
 import { TokenExpiredError } from "jsonwebtoken";
-import { AuthenticationException } from "../../domain/dtos/Error";
+import { AuthenticationException, InternalErrorException } from "../../domain/dtos/Error";
 import jwt from "jsonwebtoken";
 import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
 
@@ -13,8 +13,12 @@ export default class AuthMiddleware {
 
     protected async authenticate(jwtToken: string) {
         try {
-            // virar env dps
-            const payload: any = jwt.verify(jwtToken, "HS256");
+            if (!process.env.JWT_SECRET) {
+                console.log("As variável JWT_SECRET não foi definida");
+                throw new InternalErrorException("Erro interno");
+            }
+
+            const payload: any = jwt.verify(jwtToken, process.env.JWT_SECRET);
 
             const dealer = await this.dealerRepository.findOneBy({
                 id: payload.dealer.id
@@ -39,7 +43,7 @@ export default class AuthMiddleware {
             const authHeader = request.headers.authorization;
 
             if (!authHeader) {
-                throw new AuthenticationException('Acesso não autorizado.');
+                throw new AuthenticationException('É necessário informar um token de autenticação.');
             }
 
             const jwtToken = authHeader.split('Bearer ')[1];

@@ -1,7 +1,8 @@
-import { Order, ORDER_STATUS } from "../../../domain/entities/Order";
+import { Order, ORDER_STATUS } from "../../domain/entities/Order";
 import faker from "faker";
 import { generate } from "gerador-validador-cpf";
-import { CreateOrderRequest } from "../../../domain/dtos/OrderDto";
+import { CreateOrderRequest } from "../../domain/dtos/OrderDto";
+import { addDays } from "date-fns";
 
 export function mockDbOrder(partial?: Partial<Order>): Order {
     const subtotal = faker.datatype.number();
@@ -29,7 +30,11 @@ export function mockOrderRequest(partial?: Partial<CreateOrderRequest>): CreateO
         code: faker.random.alphaNumeric(3),
         dealerCpf: generate(),
         subtotal: faker.datatype.number(),
-        date: new Date(),
+        date: new Date().toISOString(),
         ...partial
     }
+}
+
+export function generateLaterDate() {
+    return addDays(new Date(), 1).toISOString();
 }

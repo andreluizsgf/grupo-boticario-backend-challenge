@@ -2,6 +2,7 @@ import faker from "faker";
 import OrderValidator from "../../domain/common/validators/OrderValidator";
 import { generate } from "gerador-validador-cpf";
 import { ORDER_STATUS } from "../../domain/entities/Order";
+import { generateLaterDate } from "../mocks/order";
 
 const orderValidator = new OrderValidator();
 
@@ -31,21 +32,20 @@ describe("Order Validator", () => {
 
     describe("date", () => {
         test("should not throw error when date is valid.", async () => {
-            expect(orderValidator.validateDate(new Date())).toBe(undefined);
+            expect(orderValidator.validateDate(new Date().toISOString())).toBe(undefined);
         });
 
-        // VOLTAR AQUI QUANDO DATE FOR STRING
-        // test("should throw error if date is in a invalid format", async () => {
-        //     try {
-        //         orderValidator.validateDate(faker.random.w(6));
-        //     } catch (error) {
-        //         expect(error).toBe("Informe uma data no formato correto. YYYY-mm-dd hh:mm:ss");
-        //     }
-        // });
+        test("should throw error if date is in a invalid format", async () => {
+            try {
+                orderValidator.validateDate(faker.random.word());
+            } catch (error) {
+                expect(error).toBe("Informe uma data no formato correto. YYYY-mm-dd hh:mm:ss");
+            }
+        });
 
         test("should throw error if date is greater than today", async () => {
             try {
-                expect(orderValidator.validateDate(new Date(new Date().getTime() + 1))).toBe(undefined);
+                expect(orderValidator.validateDate(generateLaterDate())).toBe(undefined);
             } catch (error: any) {
                 expect(error.message).toBe("A data do pedido deve ser menor que a atual.");
             }
