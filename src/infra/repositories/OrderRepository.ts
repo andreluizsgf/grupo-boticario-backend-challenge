@@ -12,6 +12,8 @@ export default class OrderRepository extends BaseRepository<Order> implements IO
     return await knex("orders as o")
       .select(knex.raw('COALESCE(SUM("subtotal"), 0) as value'))
       .where("o.dealer_cpf", dealerCpf)
+      .andWhereRaw("date_trunc('day', o.date) >= date_trunc('day', now() - interval '1 month')")
+      .andWhereRaw("date_trunc('day', o.date) <= date_trunc('day', now())")
       .first();
   }
 

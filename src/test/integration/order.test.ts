@@ -6,6 +6,7 @@ import faker from "faker";
 import { getValidAccessToken } from "../helpers";
 import e from "express";
 import { ListOrdersResponse, OrderResponse } from "../../domain/dtos/OrderDto";
+import * as fns from "date-fns";
 
 let app: e.Express;
 const specialCpf = generate();
@@ -40,6 +41,49 @@ describe("Order", () => {
         cashbackValueInCents: Math.round((mockOrder.subtotal * 10) / 100),
         status,
       });
+    });
+
+    test("Should get correct cashback percentage", async () => {
+      const { accessToken, mockDealer } = await getValidAccessToken(app);
+      const mockOrder = mockOrderRequest({
+        dealerCpf: mockDealer.cpf,
+        subtotal: faker.datatype.number() + 100000,
+        date: fns.addMonths(new Date(), -2).toISOString(),
+      });
+
+      const firstCreateOrderResponse = await request(app)
+        .post("/order")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(mockOrder)
+        .expect(201);
+
+      expect(firstCreateOrderResponse.body.cashbackPercentage).toBe(10);
+
+      const secondCreateOrderResponse = await request(app)
+        .post("/order")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(
+          mockOrderRequest({
+            dealerCpf: mockDealer.cpf,
+            subtotal: faker.datatype.number() + 160000,
+          })
+        )
+        .expect(201);
+
+      expect(secondCreateOrderResponse.body.cashbackPercentage).toBe(10);
+
+      const thirdCreateOrderResponse = await request(app)
+        .post("/order")
+        .set("Authorization", `Bearer ${accessToken}`)
+        .send(
+          mockOrderRequest({
+            dealerCpf: mockDealer.cpf,
+            subtotal: faker.datatype.number() + 160000,
+          })
+        )
+        .expect(201);
+
+      expect(thirdCreateOrderResponse.body.cashbackPercentage).toBe(20);
     });
 
     test.each([
