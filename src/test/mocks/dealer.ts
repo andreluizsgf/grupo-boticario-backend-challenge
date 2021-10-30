@@ -3,8 +3,6 @@ import { generate } from 'gerador-validador-cpf';
 import { v4 } from 'uuid';
 import faker from 'faker';
 import { CreateDealerRequest } from '../../domain/dtos/DealerDto';
-import jwt from 'jsonwebtoken';
-import { hash } from 'bcrypt';
 
 export function mockDbDealer(partial?: Partial<Dealer>): Dealer {
     return {

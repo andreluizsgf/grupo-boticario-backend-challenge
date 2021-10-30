@@ -16,7 +16,7 @@ describe('Order Validator', () => {
         test('should throw error if dealer cpf and given cpf are not same.', async () => {
             try {
                 orderValidator.validateCpf(generate(), generate());
-            } catch (error: any) {
+            } catch (error) {
                 expect(error.message).toBe('O cpf informado não condiz com o cpf do usuário antenticado.');
             }
         });
@@ -24,7 +24,7 @@ describe('Order Validator', () => {
         test('should throw error if given cpf is not a cpf.', async () => {
             try {
                 orderValidator.validateCpf(faker.random.alphaNumeric(11), generate());
-            } catch (error: any) {
+            } catch (error) {
                 expect(error.message).toBe('O cpf informado é inválido.');
             }
         });
@@ -46,7 +46,7 @@ describe('Order Validator', () => {
         test('should throw error if date is greater than today', async () => {
             try {
                 expect(orderValidator.validateDate(generateLaterDate())).toBe(undefined);
-            } catch (error: any) {
+            } catch (error) {
                 expect(error.message).toBe('A data do pedido deve ser menor que a atual.');
             }
         });
@@ -60,7 +60,7 @@ describe('Order Validator', () => {
         test('should throw error if subtotal is less than or equal zero.', () => {
             try {
                 orderValidator.validateSubtotal(-faker.datatype.number());
-            } catch (error: any) {
+            } catch (error) {
                 expect(error.message).toBe('O valor da compra deve ser maior que 0.');
             }
         });
@@ -74,7 +74,7 @@ describe('Order Validator', () => {
         test('should throw error if status is not correct.', () => {
             try {
                 orderValidator.validateStatus(faker.random.word());
-            } catch (error: any) {
+            } catch (error) {
                 expect(error.message).toBe('O status informado não é válido.');
             }
         });

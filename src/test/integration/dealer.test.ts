@@ -1,10 +1,6 @@
-import { generate } from 'gerador-validador-cpf';
 import request from 'supertest';
 import Application from '../../app';
 import { CreateDealerRequest, DealerResponse } from '../../domain/dtos/DealerDto';
-import { mockOrderRequest } from '../mocks/order';
-import faker from 'faker';
-import { Order } from '../../domain/entities/Order';
 import { Dealer } from '../../domain/entities/Dealer';
 import { mockDealerRequest } from '../mocks/dealer';
 import MockAdapter from 'axios-mock-adapter';

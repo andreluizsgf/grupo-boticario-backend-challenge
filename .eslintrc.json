@@ -5,6 +5,7 @@
     },
     "extends": [
         "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
@@ -13,9 +14,11 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "unused-imports"
     ],
     "rules": {
+        "unused-imports/no-unused-imports": "error",
         "indent": [
             "error",
             4

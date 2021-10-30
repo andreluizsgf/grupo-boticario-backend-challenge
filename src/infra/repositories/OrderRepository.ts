@@ -10,13 +10,13 @@ export default class OrderRepository extends BaseRepository<Order> implements IO
     }
 
     async getTotalForDealer(dealerCpf: string): Promise<{value: number}> {
-        return (await knex<number>('orders as o')
+        return (await knex('orders as o')
             .select(knex.raw('COALESCE(SUM("subtotal"), 0) as value'))
             .where('o.dealer_cpf', dealerCpf)
-            .first()) as any;
+            .first());
     }
 
-    async paginate(currentPage = '1', perPage = '10', dealerId: string, status: OrderStatus): Promise<{ data: Order[], pagination: PaginationResponse}> {
+    async paginate(currentPage = 1, perPage = 10, dealerId: string, status: OrderStatus): Promise<{ data: Order[], pagination: PaginationResponse}> {
         const query = knex('orders as o')
             .select('*')
             .where('dealer_id', dealerId);
@@ -26,8 +26,8 @@ export default class OrderRepository extends BaseRepository<Order> implements IO
         }
 
         return query.paginate({
-            currentPage: 1,
-            perPage: 10,
+            currentPage,
+            perPage,
             isLengthAware: true
         });
     }

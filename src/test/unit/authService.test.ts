@@ -1,6 +1,6 @@
 import DealerRepository from '../../infra/repositories/DealerRepository';
 import sinon from 'sinon';
-import { mockDbDealer, mockDealerRequest } from '../mocks/dealer';
+import { mockDbDealer } from '../mocks/dealer';
 import Sinon from 'sinon';
 import AuthService from '../../app/services/AuthService';
 import { hash } from 'bcrypt';

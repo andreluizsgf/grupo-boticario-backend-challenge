@@ -1,4 +1,3 @@
-import { Knex } from 'knex';
 import { v4 } from 'uuid';
 import { IBaseRepository } from '../../domain/database/repositories/IBaseRepository';
 import { BaseModel } from '../../domain/entities/Base';

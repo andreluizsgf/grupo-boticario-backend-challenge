@@ -25,7 +25,7 @@ describe('Auth Middleware', () => {
 
         const mockResponse = {} as express.Response;
 
-        const act = authMiddleware.handle(mockRequest, mockResponse, () => {});
+        const act = authMiddleware.handle(mockRequest, mockResponse, () => { return; });
 
         expect(act).rejects.toThrowError('É necessário informar um token de autenticação.');
     });

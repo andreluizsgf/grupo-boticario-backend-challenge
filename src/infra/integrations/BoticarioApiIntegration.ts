@@ -16,7 +16,7 @@ export default class BoticarionApiIntegration {
 
     async getCashbackCreditForDealer(dealerCpf: string): Promise<BoticarioBodyResponse> {
         const { data, status, statusText } = await this.boticarioClient.get<BoticarioResponse>(
-            '/cashback?cpf=12345'
+            `/cashback?cpf=${dealerCpf}`
         );
 
         if (status !== 200) {

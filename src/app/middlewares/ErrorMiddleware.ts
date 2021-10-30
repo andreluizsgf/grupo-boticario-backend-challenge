@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable unused-imports/no-unused-vars */
 import express from 'express';
 import { HttpException } from '../../domain/dtos/Error';
 

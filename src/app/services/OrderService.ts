@@ -2,7 +2,6 @@ import { IOrderRepository } from '../../domain/database/repositories/IOrderRepos
 import NotFoundException, { ConflictException } from '../../domain/dtos/Error';
 import { CreateOrderRequest, ListOrdersRequest } from '../../domain/dtos/OrderDto';
 import { IOrderService } from '../../domain/services/IOrderService';
-import { hash } from 'bcrypt';
 import OrderValidator from '../../domain/common/validators/OrderValidator';
 import { IDealerRepository } from '../../domain/database/repositories/IDealerRepository';
 import { Dealer } from '../../domain/entities/Dealer';
@@ -72,8 +71,8 @@ export default class OrderService implements IOrderService {
         });
 
         return this.orderRepository.paginate(
-            currentPage,
-            perPage,
+            parseInt(currentPage),
+            parseInt(perPage),
             currentDealer.id,
             status as OrderStatus
         );
