@@ -14,7 +14,7 @@ import OrderService from './app/services/OrderService';
 import OrderRepository from './infra/repositories/OrderRepository';
 import OrderValidator from './domain/common/validators/OrderValidator';
 import { knex } from './infra/knex';
-import BoticarionApiIntegration from './infra/integrations/Boticario';
+import BoticarionApiIntegration from './infra/integrations/BoticarioApiIntegration';
 
 export default class Application {
     private validators = this.initializeValidators();

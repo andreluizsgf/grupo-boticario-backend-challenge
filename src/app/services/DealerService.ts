@@ -4,7 +4,7 @@ import { CreateDealerRequest } from "../../domain/dtos/DealerDto";
 import { IDealerService } from "../../domain/services/IDealerService";
 import { hash } from "bcrypt";
 import DealerValidator from "../../domain/common/validators/DealerValidator";
-import BoticarionApiIntegration from "../../infra/integrations/Boticario";
+import BoticarionApiIntegration from "../../infra/integrations/BoticarioApiIntegration";
 import { Dealer } from "../../domain/entities/Dealer";
 export default class DealerService implements IDealerService {
     private dealerRepository: IDealerRepository;
@@ -27,11 +27,11 @@ export default class DealerService implements IDealerService {
         if (existingUserByEmail) {
             throw new ConflictException("O email informado já está sendo utilizado.")
         }
-        
+
         const existingUserByCpf = await this.dealerRepository.findOneBy({
             cpf
         });
-        
+
         if (existingUserByCpf) {
             throw new ConflictException("O cpf informado já está sendo utilizado.")
         }
@@ -46,6 +46,6 @@ export default class DealerService implements IDealerService {
     }
 
     async getCashback(currentDealer: Dealer) {
-        return this.boticarioIntegration.getCashbackForDealer(currentDealer.cpf);
+        return (await this.boticarioIntegration.getCashbackCreditForDealer(currentDealer.cpf)).credit;
     }
 }

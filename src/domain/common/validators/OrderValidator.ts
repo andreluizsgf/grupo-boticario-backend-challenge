@@ -23,13 +23,14 @@ export default class OrderValidator {
   }
 
   validateCpf(cpf: string, currentDealerCpf: string) {
+    if (!validate(cpf)) {
+      throw new InvalidArgumentException("O cpf informado é inválido.");
+    };
+
     if (cpf !== currentDealerCpf) {
       throw new InvalidArgumentException("O cpf informado não condiz com o cpf do usuário antenticado.");
     };
 
-    if (!validate(cpf)) {
-      throw new InvalidArgumentException("O cpf informado é inválido.");
-    };
   }
 
   validateStatus(status?: string) {

@@ -2,10 +2,11 @@ interface BaseDealerRequest {
     name: string
     cpf: string
     email: string
-    password: string
 }
 
-export interface CreateDealerRequest extends BaseDealerRequest {}
+export interface CreateDealerRequest extends BaseDealerRequest {
+    password: string
+}
 
 export interface DealerResponse extends BaseDealerRequest {
     id: string

@@ -6,4 +6,6 @@ export default class DealerRepository extends BaseRepository<Dealer> implements 
     constructor() {
         super("dealers");
     }
+    
+    
  }

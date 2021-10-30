@@ -1,3 +1,4 @@
+import { PaginationResponse } from "../../domain/database/repositories/IBaseRepository";
 import { IOrderRepository } from "../../domain/database/repositories/IOrderRepository"
 import { Order, OrderStatus } from "../../domain/entities/Order";
 import { knex } from "../knex";
@@ -15,7 +16,7 @@ export default class OrderRepository extends BaseRepository<Order> implements IO
         .first()) as any;
     }
 
-    async paginateA(currentPage = "1", perPage = "10", dealerId: string, status: OrderStatus): Promise<any> {
+    async paginate(currentPage = "1", perPage = "10", dealerId: string, status: OrderStatus): Promise<{ data: Order[], pagination: PaginationResponse}> {
         const query = knex("orders as o")
         .select("*")
         .where("dealer_id", dealerId)
