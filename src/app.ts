@@ -17,61 +17,75 @@ import { knex } from './infra/knex';
 import BoticarionApiIntegration from './infra/integrations/BoticarioApiIntegration';
 
 export default class Application {
-    private validators = this.initializeValidators();
-    private repositories = this.initializeRepositories();
-    private integrations = this.initializeIntegrations();
-    private services = this.initializeServices();
-    private controllers = this.initializeControllers();
-    private middlewares = this.initializeMiddlewares();
-    public app: Express = express();
+  private validators = this.initializeValidators();
+  private repositories = this.initializeRepositories();
+  private integrations = this.initializeIntegrations();
+  private services = this.initializeServices();
+  private controllers = this.initializeControllers();
+  private middlewares = this.initializeMiddlewares();
+  public app: Express = express();
 
-    private initializeRepositories() {
-        return {
-            dealerRepository: new DealerRepository(),
-            orderRepository: new OrderRepository()
-        };
-    }
+  private initializeRepositories() {
+    return {
+      dealerRepository: new DealerRepository(),
+      orderRepository: new OrderRepository(),
+    };
+  }
 
-    private initializeServices() {
-        return {
-            dealerService: new DealerService(this.repositories.dealerRepository, this.validators.dealerValidator, this.integrations.boticarionIntegration),
-            authService: new AuthService(this.repositories.dealerRepository),
-            orderService: new OrderService(this.repositories.orderRepository, this.repositories.dealerRepository, this.validators.orderValidator)
-        };
-    }
+  private initializeServices() {
+    return {
+      dealerService: new DealerService(
+        this.repositories.dealerRepository,
+        this.validators.dealerValidator,
+        this.integrations.boticarionIntegration
+      ),
+      authService: new AuthService(this.repositories.dealerRepository),
+      orderService: new OrderService(
+        this.repositories.orderRepository,
+        this.repositories.dealerRepository,
+        this.validators.orderValidator
+      ),
+    };
+  }
 
-    private initializeControllers() {
-        return {
-            dealerController: new DealerController(this.services.dealerService),
-            authController: new AuthController(this.services.authService),
-            orderController: new OrderController(this.services.orderService)
-        };
-    }
+  private initializeControllers() {
+    return {
+      dealerController: new DealerController(this.services.dealerService),
+      authController: new AuthController(this.services.authService),
+      orderController: new OrderController(this.services.orderService),
+    };
+  }
 
-    private initializeMiddlewares() {
-        return {
-            authMiddleware: new AuthMiddleware(this.repositories.dealerRepository),
-            errorMiddleware: new ErrorMiddleware()
-        };
-    }
+  private initializeMiddlewares() {
+    return {
+      authMiddleware: new AuthMiddleware(this.repositories.dealerRepository),
+      errorMiddleware: new ErrorMiddleware(),
+    };
+  }
 
-    private initializeValidators() {
-        return {
-            dealerValidator: new DealerValidator(),
-            orderValidator: new OrderValidator(),
-        };
-    }
+  private initializeValidators() {
+    return {
+      dealerValidator: new DealerValidator(),
+      orderValidator: new OrderValidator(),
+    };
+  }
 
-    private initializeIntegrations() {
-        return {
-            boticarionIntegration: new BoticarionApiIntegration()
-        };
-    }
+  private initializeIntegrations() {
+    return {
+      boticarionIntegration: new BoticarionApiIntegration(),
+    };
+  }
 
-    public async start() {
-        await knex.migrate.latest();
-        this.app.use(express.json());
-        new Router(this.app, this.controllers.dealerController, this.controllers.authController, this.controllers.orderController, this.middlewares.authMiddleware, this.middlewares.errorMiddleware);
-    }
+  public async start() {
+    await knex.migrate.latest();
+    this.app.use(express.json());
+    new Router(
+      this.app,
+      this.controllers.dealerController,
+      this.controllers.authController,
+      this.controllers.orderController,
+      this.middlewares.authMiddleware,
+      this.middlewares.errorMiddleware
+    );
+  }
 }
-

@@ -17,100 +17,113 @@ const orderValidator = new OrderValidator();
 const orderService = new OrderService(orderRepository, dealerRepository, orderValidator);
 
 beforeEach(() => {
-    sandbox.restore();
+  sandbox.restore();
 });
 
 describe('Order Service', () => {
-    describe('create', () => {
-        test('Should create a order', async () => {
-            const mockOrder = mockOrderRequest();
-            const dbOrder = mockDbOrder({
-                ...mockOrder,
-                date: new Date(mockOrder.date)
-            });
-            const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
+  describe('create', () => {
+    test('Should create a order', async () => {
+      const mockOrder = mockOrderRequest();
+      const dbOrder = mockDbOrder({
+        ...mockOrder,
+        date: new Date(mockOrder.date),
+      });
+      const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
 
-            sandbox.stub(OrderRepository.prototype, 'insert').returns(Promise.resolve(dbOrder));
-            sandbox.stub(OrderRepository.prototype, 'getTotalForDealer').returns(Promise.resolve({
-                value: mockOrder.subtotal
-            }));
-            sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(dbDealer));
-            sandbox.stub(OrderRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
+      sandbox.stub(OrderRepository.prototype, 'insert').returns(Promise.resolve(dbOrder));
+      sandbox.stub(OrderRepository.prototype, 'getTotalForDealer').returns(
+        Promise.resolve({
+          value: mockOrder.subtotal,
+        })
+      );
+      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(dbDealer));
+      sandbox.stub(OrderRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
 
-            const createdOrder = await orderService.create(dbDealer, mockOrder);
+      const createdOrder = await orderService.create(dbDealer, mockOrder);
 
-            expect(createdOrder).toMatchObject(dbOrder);
-        });
-
-        test('should throw error when code is already used.', async () => {
-            const mockOrder = mockOrderRequest();
-            const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
-
-            sandbox.stub(OrderRepository.prototype, 'findOneBy').withArgs({ code: mockOrder.code }).returns(Promise.resolve(mockDbOrder()));
-
-            const act = orderService.create(dbDealer, mockOrder);
-
-            expect(act).rejects.toThrowError('Já existe um pedido com o código informado.');
-            expect(act).rejects.toBeInstanceOf(ConflictException);
-        });
-
-        test('should throw error when dealer cpf does not exist.', async () => {
-            const mockOrder = mockOrderRequest();
-            const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
-
-            sandbox.stub(OrderRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
-            sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
-            sandbox.stub(OrderRepository.prototype, 'getTotalForDealer').returns(Promise.resolve({
-                value: mockOrder.subtotal
-            }));
-
-            const act = orderService.create(dbDealer, mockOrder);
-
-            expect(act).rejects.toThrowError('O revendedor informado não existe.');
-            expect(act).rejects.toBeInstanceOf(ConflictException);
-        });
+      expect(createdOrder).toMatchObject(dbOrder);
     });
 
-    describe('list', () => {
-        test('should list all created orders for dealer', async () => {
-            const dbDealer = mockDbDealer();
-            const dbOrder = mockDbOrder();
-            const currentPage = 1;
-            const perPage = 1;
-    
-            sandbox.stub(OrderRepository.prototype, 'paginate').returns(Promise.resolve({
-                data: [dbOrder], pagination: {
-                    currentPage,
-                    perPage,
-                    lastPage: 1,
-                    total: 1
-                }
-            }));
+    test('should throw error when code is already used.', async () => {
+      const mockOrder = mockOrderRequest();
+      const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
 
-            const listedOrders = await orderService.list(dbDealer, { perPage: '1', currentPage: '1' });
+      sandbox
+        .stub(OrderRepository.prototype, 'findOneBy')
+        .withArgs({ code: mockOrder.code })
+        .returns(Promise.resolve(mockDbOrder()));
 
-            expect(listedOrders.data).toContainEqual(dbOrder);
-            expect(listedOrders.pagination).toMatchObject({
-                currentPage,
-                perPage,
-                lastPage: 1,
-                total: 1
-            });
-        });
+      const act = orderService.create(dbDealer, mockOrder);
+
+      expect(act).rejects.toThrowError('Já existe um pedido com o código informado.');
+      expect(act).rejects.toBeInstanceOf(ConflictException);
     });
 
-    describe('getCashbackPercentage', () => {
-        test('should get correct cashback percentage.', () => {
-            const orderValueAccumulated = faker.datatype.number();
-            const cashbackPercentage = orderService.getCashbackPercentage(orderValueAccumulated);
+    test('should throw error when dealer cpf does not exist.', async () => {
+      const mockOrder = mockOrderRequest();
+      const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
 
-            if (orderValueAccumulated <=  100000) {
-                expect(cashbackPercentage).toBe(10);
-            } else if (orderValueAccumulated <=  150000) {
-                expect(cashbackPercentage).toBe(15);
-            } else {
-                expect(cashbackPercentage).toBe(20);
-            }
-        });
+      sandbox.stub(OrderRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
+      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
+      sandbox.stub(OrderRepository.prototype, 'getTotalForDealer').returns(
+        Promise.resolve({
+          value: mockOrder.subtotal,
+        })
+      );
+
+      const act = orderService.create(dbDealer, mockOrder);
+
+      expect(act).rejects.toThrowError('O revendedor informado não existe.');
+      expect(act).rejects.toBeInstanceOf(ConflictException);
     });
+  });
+
+  describe('list', () => {
+    test('should list all created orders for dealer', async () => {
+      const dbDealer = mockDbDealer();
+      const dbOrder = mockDbOrder();
+      const currentPage = 1;
+      const perPage = 1;
+
+      sandbox.stub(OrderRepository.prototype, 'paginate').returns(
+        Promise.resolve({
+          data: [dbOrder],
+          pagination: {
+            currentPage,
+            perPage,
+            lastPage: 1,
+            total: 1,
+          },
+        })
+      );
+
+      const listedOrders = await orderService.list(dbDealer, {
+        perPage: '1',
+        currentPage: '1',
+      });
+
+      expect(listedOrders.data).toContainEqual(dbOrder);
+      expect(listedOrders.pagination).toMatchObject({
+        currentPage,
+        perPage,
+        lastPage: 1,
+        total: 1,
+      });
+    });
+  });
+
+  describe('getCashbackPercentage', () => {
+    test('should get correct cashback percentage.', () => {
+      const orderValueAccumulated = faker.datatype.number();
+      const cashbackPercentage = orderService.getCashbackPercentage(orderValueAccumulated);
+
+      if (orderValueAccumulated <= 100000) {
+        expect(cashbackPercentage).toBe(10);
+      } else if (orderValueAccumulated <= 150000) {
+        expect(cashbackPercentage).toBe(15);
+      } else {
+        expect(cashbackPercentage).toBe(20);
+      }
+    });
+  });
 });

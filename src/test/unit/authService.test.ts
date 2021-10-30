@@ -13,37 +13,37 @@ const dealerRepository = new DealerRepository();
 const authService = new AuthService(dealerRepository);
 
 beforeEach(() => {
-    sandbox.restore();
+  sandbox.restore();
 });
 
 describe('Dealer Service', () => {
-    describe('login', () => {
-        test('Should generate a valid access token when dealer credentials are correct.', async () => {
-            const password = faker.internet.password();
-            const dbDealer = mockDbDealer({
-                password: await hash(password, 10)
-            });
+  describe('login', () => {
+    test('Should generate a valid access token when dealer credentials are correct.', async () => {
+      const password = faker.internet.password();
+      const dbDealer = mockDbDealer({
+        password: await hash(password, 10),
+      });
 
-            sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(dbDealer));
+      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(dbDealer));
 
-            const accessToken = await authService.login({
-                email: dbDealer.email,
-                password,
-            });
+      const accessToken = await authService.login({
+        email: dbDealer.email,
+        password,
+      });
 
-            expect(accessToken).toBeDefined();
-        });
-
-        test('Should throw error when dealer email or password are incorrect', async () => {
-            sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
-
-            const act = authService.login({
-                email: faker.internet.email(),
-                password: faker.internet.password(),
-            });
-
-            expect(act).rejects.toThrowError('Dados de login inválidos.');
-            expect(act).rejects.toBeInstanceOf(NotFoundException);
-        });
+      expect(accessToken).toBeDefined();
     });
+
+    test('Should throw error when dealer email or password are incorrect', async () => {
+      sandbox.stub(DealerRepository.prototype, 'findOneBy').returns(Promise.resolve(undefined));
+
+      const act = authService.login({
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+      });
+
+      expect(act).rejects.toThrowError('Dados de login inválidos.');
+      expect(act).rejects.toBeInstanceOf(NotFoundException);
+    });
+  });
 });

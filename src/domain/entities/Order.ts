@@ -5,13 +5,13 @@ type OrderStatusTuple = typeof ORDER_STATUS;
 export type OrderStatus = OrderStatusTuple[number];
 
 export interface Order extends BaseModel {
-    id: string
-    status: OrderStatus
-    code: string
-    dealerCpf: string
-    dealerId: string
-    date: Date
-    subtotal: number
-    cashbackPercentage: number
-    cashbackValueInCents: number
+  id: string;
+  status: OrderStatus;
+  code: string;
+  dealerCpf: string;
+  dealerId: string;
+  date: Date;
+  subtotal: number;
+  cashbackPercentage: number;
+  cashbackValueInCents: number;
 }
