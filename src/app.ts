@@ -7,7 +7,7 @@ import AuthService from './app/services/AuthService';
 import DealerService from './app/services/DealerService';
 import DealerRepository from './infra/repositories/DealerRepository';
 import Router from './routes/routes';
-import { Express } from "express";
+import { Express } from 'express';
 import DealerValidator from './domain/common/validators/DealerValidator';
 import OrderController from './app/controllers/OrderController';
 import OrderService from './app/services/OrderService';
@@ -45,27 +45,27 @@ export default class Application {
             dealerController: new DealerController(this.services.dealerService),
             authController: new AuthController(this.services.authService),
             orderController: new OrderController(this.services.orderService)
-        }
+        };
     }
 
     private initializeMiddlewares() {
         return {
             authMiddleware: new AuthMiddleware(this.repositories.dealerRepository),
             errorMiddleware: new ErrorMiddleware()
-        }
+        };
     }
 
     private initializeValidators() {
         return {
             dealerValidator: new DealerValidator(),
             orderValidator: new OrderValidator(),
-        }
+        };
     }
 
     private initializeIntegrations() {
         return {
             boticarionIntegration: new BoticarionApiIntegration()
-        }
+        };
     }
 
     public async start() {
@@ -73,5 +73,5 @@ export default class Application {
         this.app.use(express.json());
         new Router(this.app, this.controllers.dealerController, this.controllers.authController, this.controllers.orderController, this.middlewares.authMiddleware, this.middlewares.errorMiddleware);
     }
-};
+}
 

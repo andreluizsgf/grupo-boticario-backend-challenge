@@ -1,15 +1,15 @@
-import { generate } from "gerador-validador-cpf";
-import request from "supertest";
-import Application from "../../app";
-import { CreateDealerRequest, DealerResponse } from "../../domain/dtos/DealerDto";
-import { mockOrderRequest } from "../mocks/order";
-import faker from "faker";
-import { Order } from "../../domain/entities/Order";
-import { Dealer } from "../../domain/entities/Dealer";
-import { mockDealerRequest } from "../mocks/dealer";
-import MockAdapter from "axios-mock-adapter";
-import axios from "axios";
-import { BoticarioResponse } from "../../infra/integrations/BoticarioApiIntegration";
+import { generate } from 'gerador-validador-cpf';
+import request from 'supertest';
+import Application from '../../app';
+import { CreateDealerRequest, DealerResponse } from '../../domain/dtos/DealerDto';
+import { mockOrderRequest } from '../mocks/order';
+import faker from 'faker';
+import { Order } from '../../domain/entities/Order';
+import { Dealer } from '../../domain/entities/Dealer';
+import { mockDealerRequest } from '../mocks/dealer';
+import MockAdapter from 'axios-mock-adapter';
+import axios from 'axios';
+import { BoticarioResponse } from '../../infra/integrations/BoticarioApiIntegration';
 
 const appi = new Application();
 const app = appi.app;
@@ -23,10 +23,10 @@ beforeAll(async () => {
     });
 
     await appi.start();
-})
+});
 
-describe("Create", () => {
-    test("Should create a dealer.", async () => {
+describe('Create', () => {
+    test('Should create a dealer.', async () => {
         const mockDealer: CreateDealerRequest = mockDealerRequest();
         const createDealerResponse = await request(app).post('/dealer').send(mockDealer).expect(201);
         const createdDealer: Dealer = createDealerResponse.body;
@@ -39,11 +39,11 @@ describe("Create", () => {
             name: createdDealer.name,
             updatedAt: createdDealer.updatedAt
         });
-    })
-})
+    });
+});
 
-describe("Get Cashback", () => {
-    test("Should get cashback.", async () => {
+describe('Get Cashback', () => {
+    test('Should get cashback.', async () => {
         const mockDealer: CreateDealerRequest = mockDealerRequest();
         const createDealerResponse = await request(app).post('/dealer').send(mockDealer).expect(201);
         const createdDealer: Dealer = createDealerResponse.body;
@@ -57,5 +57,5 @@ describe("Get Cashback", () => {
         const getCashbackResponse = await request(app).get('/dealer/cashback').set('Authorization', `Bearer ${accessToken}`).expect(200);
 
         // console.log(getCashbackResponse.body);
-    })
-})
+    });
+});

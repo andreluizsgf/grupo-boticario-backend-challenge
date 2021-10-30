@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 interface BoticarioBodyResponse {
     credit: number
@@ -16,7 +16,7 @@ export default class BoticarionApiIntegration {
 
     async getCashbackCreditForDealer(dealerCpf: string): Promise<BoticarioBodyResponse> {
         const { data, status, statusText } = await this.boticarioClient.get<BoticarioResponse>(
-            `/cashback?cpf=12345`
+            '/cashback?cpf=12345'
         );
 
         if (status !== 200) {

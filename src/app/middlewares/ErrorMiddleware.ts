@@ -1,5 +1,5 @@
-import express from "express";
-import { HttpException } from "../../domain/dtos/Error";
+import express from 'express';
+import { HttpException } from '../../domain/dtos/Error';
 
 export default class ErrorMiddleware {
     async handle(error: any, req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -9,6 +9,6 @@ export default class ErrorMiddleware {
 
         console.log(error);
 
-        return res.send({error: "Erro interno."}).status(500)
+        return res.send({error: 'Erro interno.'}).status(500);
     }
 }

@@ -1,12 +1,12 @@
-import { IOrderRepository } from "../../domain/database/repositories/IOrderRepository";
-import NotFoundException, { ConflictException } from "../../domain/dtos/Error";
-import { CreateOrderRequest, ListOrdersRequest } from "../../domain/dtos/OrderDto";
-import { IOrderService } from "../../domain/services/IOrderService";
-import { hash } from "bcrypt";
-import OrderValidator from "../../domain/common/validators/OrderValidator";
-import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
-import { Dealer } from "../../domain/entities/Dealer";
-import { OrderStatus } from "../../domain/entities/Order";
+import { IOrderRepository } from '../../domain/database/repositories/IOrderRepository';
+import NotFoundException, { ConflictException } from '../../domain/dtos/Error';
+import { CreateOrderRequest, ListOrdersRequest } from '../../domain/dtos/OrderDto';
+import { IOrderService } from '../../domain/services/IOrderService';
+import { hash } from 'bcrypt';
+import OrderValidator from '../../domain/common/validators/OrderValidator';
+import { IDealerRepository } from '../../domain/database/repositories/IDealerRepository';
+import { Dealer } from '../../domain/entities/Dealer';
+import { OrderStatus } from '../../domain/entities/Order';
 
 export default class OrderService implements IOrderService {
     private orderRepository: IOrderRepository;
@@ -14,13 +14,13 @@ export default class OrderService implements IOrderService {
     private orderValidator: OrderValidator;
 
     constructor(orderRepository: IOrderRepository, dealerRepository: IDealerRepository, orderValidator: OrderValidator) {
-        this.orderRepository = orderRepository
-        this.dealerRepository = dealerRepository
+        this.orderRepository = orderRepository;
+        this.dealerRepository = dealerRepository;
         this.orderValidator = orderValidator;
     }
 
     async create(currentDealer: Dealer, createOrderRequest: CreateOrderRequest) {
-        const { code, date, dealerCpf, subtotal } = createOrderRequest
+        const { code, date, dealerCpf, subtotal } = createOrderRequest;
 
         this.orderValidator.validateOrderRequest({
             code,
@@ -35,7 +35,7 @@ export default class OrderService implements IOrderService {
         });
 
         if (existingOrder) {
-            throw new ConflictException("Já existe um pedido com o código informado.")
+            throw new ConflictException('Já existe um pedido com o código informado.');
         }
 
         const dealer = await this.dealerRepository.findOneBy({
@@ -43,7 +43,7 @@ export default class OrderService implements IOrderService {
         });
 
         if (!dealer) {
-            throw new NotFoundException("O revendedor informado não existe.");
+            throw new NotFoundException('O revendedor informado não existe.');
         }
 
         const { value } = await this.orderRepository.getTotalForDealer(dealerCpf);
@@ -58,7 +58,7 @@ export default class OrderService implements IOrderService {
             dealerId: dealer.id,
             cashbackPercentage,
             cashbackValueInCents: Math.round((subtotal * cashbackPercentage) / 100),
-            status: dealerCpf === process.env.SPECIAL_DEALER_CPF ? "approved" : "validating"
+            status: dealerCpf === process.env.SPECIAL_DEALER_CPF ? 'approved' : 'validating'
         });
     }
 
@@ -76,17 +76,17 @@ export default class OrderService implements IOrderService {
             perPage,
             currentDealer.id,
             status as OrderStatus
-        )
+        );
     }
 
     getCashbackPercentage(orderValueAccumulated: number) {
         switch (true) {
-            case (orderValueAccumulated <= 100000):
-                return 10;
-            case (orderValueAccumulated <= 150000):
-                return 15;
-            default:
-                return 20;
+        case (orderValueAccumulated <= 100000):
+            return 10;
+        case (orderValueAccumulated <= 150000):
+            return 15;
+        default:
+            return 20;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { BaseModel } from "../../entities/Base";
+import { BaseModel } from '../../entities/Base';
 
 export interface PaginationResponse {
     currentPage: number,

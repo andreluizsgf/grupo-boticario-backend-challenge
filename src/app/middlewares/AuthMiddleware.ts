@@ -1,21 +1,21 @@
-import express from "express";
-import { TokenExpiredError } from "jsonwebtoken";
-import { AuthenticationException, InternalErrorException } from "../../domain/dtos/Error";
-import jwt from "jsonwebtoken";
-import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
+import express from 'express';
+import { TokenExpiredError } from 'jsonwebtoken';
+import { AuthenticationException, InternalErrorException } from '../../domain/dtos/Error';
+import jwt from 'jsonwebtoken';
+import { IDealerRepository } from '../../domain/database/repositories/IDealerRepository';
 
 export default class AuthMiddleware {
     private dealerRepository: IDealerRepository;
 
     constructor(dealerRepository: IDealerRepository) {
-        this.dealerRepository = dealerRepository
+        this.dealerRepository = dealerRepository;
     }
 
     protected async authenticate(jwtToken: string) {
         try {
             if (!process.env.JWT_SECRET) {
-                console.log("As variável JWT_SECRET não foi definida");
-                throw new InternalErrorException("Erro interno");
+                console.log('As variável JWT_SECRET não foi definida');
+                throw new InternalErrorException('Erro interno');
             }
 
             const payload: any = jwt.verify(jwtToken, process.env.JWT_SECRET);

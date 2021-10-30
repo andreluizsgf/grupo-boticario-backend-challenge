@@ -1,10 +1,10 @@
-import { Dealer } from "../../domain/entities/Dealer";
-import { generate } from "gerador-validador-cpf";
-import { v4 } from "uuid"
-import faker from "faker";
-import { CreateDealerRequest } from "../../domain/dtos/DealerDto";
+import { Dealer } from '../../domain/entities/Dealer';
+import { generate } from 'gerador-validador-cpf';
+import { v4 } from 'uuid';
+import faker from 'faker';
+import { CreateDealerRequest } from '../../domain/dtos/DealerDto';
 import jwt from 'jsonwebtoken';
-import { hash } from "bcrypt";
+import { hash } from 'bcrypt';
 
 export function mockDbDealer(partial?: Partial<Dealer>): Dealer {
     return {
@@ -16,7 +16,7 @@ export function mockDbDealer(partial?: Partial<Dealer>): Dealer {
         password: faker.internet.password(),
         updatedAt: new Date(),
         ...partial
-    }
+    };
 }
 
 export function mockDealerRequest(partial?: Partial<CreateDealerRequest>): CreateDealerRequest {
@@ -26,5 +26,5 @@ export function mockDealerRequest(partial?: Partial<CreateDealerRequest>): Creat
         name: faker.name.firstName(),
         password: faker.internet.password(),
         ...partial
-    }
+    };
 }

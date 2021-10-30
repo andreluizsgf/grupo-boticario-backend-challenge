@@ -1,6 +1,6 @@
-import express, { NextFunction } from "express";
-import { InvalidArgumentException } from "../../domain/dtos/Error";
-import { IAuthService } from "../../domain/services/IAuthService";
+import express, { NextFunction } from 'express';
+import { InvalidArgumentException } from '../../domain/dtos/Error';
+import { IAuthService } from '../../domain/services/IAuthService';
 
 export default class AuthController {
     private authService: IAuthService;
@@ -14,14 +14,14 @@ export default class AuthController {
             const { email, password } = req.body;
 
             if (!email || !password) {
-                throw new InvalidArgumentException("Todos os parâmetros devem ser informados.");
+                throw new InvalidArgumentException('Todos os parâmetros devem ser informados.');
             }
 
             const accessToken = await this.authService.login({ email, password });
 
             return res.status(200).send({accessToken});
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 }

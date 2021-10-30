@@ -1,13 +1,13 @@
-import express, { NextFunction } from "express";
-import { DealerResponse } from "../../domain/dtos/DealerDto";
-import { InvalidArgumentException } from "../../domain/dtos/Error";
-import { Dealer } from "../../domain/entities/Dealer";
-import { IDealerService } from "../../domain/services/IDealerService";
+import express, { NextFunction } from 'express';
+import { DealerResponse } from '../../domain/dtos/DealerDto';
+import { InvalidArgumentException } from '../../domain/dtos/Error';
+import { Dealer } from '../../domain/entities/Dealer';
+import { IDealerService } from '../../domain/services/IDealerService';
 
 
 export default class DealerController {
     private dealerService: IDealerService;
-    public route: string = "/dealer";
+    public route = '/dealer';
 
     constructor(dealerService: IDealerService) {
         this.dealerService = dealerService;
@@ -18,7 +18,7 @@ export default class DealerController {
             const { name, email, cpf, password } = req.body;
 
             if (!name || !email || !cpf || !password) {
-                throw new InvalidArgumentException("Todos os parâmetros devem ser informados.");
+                throw new InvalidArgumentException('Todos os parâmetros devem ser informados.');
             }
 
             const dealer = await this.dealerService.create({ name, email, cpf, password });
@@ -35,7 +35,7 @@ export default class DealerController {
 
             return res.status(201).send(response);
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 
@@ -46,7 +46,7 @@ export default class DealerController {
 
             return res.status(200).send({ cashback });
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 }

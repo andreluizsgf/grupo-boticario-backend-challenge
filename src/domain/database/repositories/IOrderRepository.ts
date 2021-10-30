@@ -1,7 +1,7 @@
-import { Filter, Insert } from "../../../infra/repositories/BaseRepository";
-import { CreateOrderRequest } from "../../dtos/OrderDto";
-import { Order, OrderStatus } from "../../entities/Order";
-import { IBaseRepository, PaginationResponse } from "./IBaseRepository";
+import { Filter, Insert } from '../../../infra/repositories/BaseRepository';
+import { CreateOrderRequest } from '../../dtos/OrderDto';
+import { Order, OrderStatus } from '../../entities/Order';
+import { IBaseRepository, PaginationResponse } from './IBaseRepository';
 
 export interface IOrderRepository extends IBaseRepository<Order> {
     insert (order: Insert<Order>): Promise<Order>

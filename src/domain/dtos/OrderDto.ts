@@ -1,5 +1,5 @@
-import { PaginationResponse } from "../database/repositories/IBaseRepository";
-import { OrderStatus } from "../entities/Order";
+import { PaginationResponse } from '../database/repositories/IBaseRepository';
+import { OrderStatus } from '../entities/Order';
 
 interface BaseOrderRequest {
     code: string
