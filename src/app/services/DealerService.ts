@@ -24,6 +24,12 @@ export default class DealerService implements IDealerService {
   async create(createDealerRequest: CreateDealerRequest) {
     const { name, cpf, email, password } = createDealerRequest;
 
+    this.dealerValidator.validateDealerRequest({
+      cpf,
+      email,
+      password,
+    });
+
     const existingUserByEmail = await this.dealerRepository.findOneBy({
       email,
     });
@@ -39,12 +45,6 @@ export default class DealerService implements IDealerService {
     if (existingUserByCpf) {
       throw new ConflictException("O cpf informado já está sendo utilizado.");
     }
-
-    this.dealerValidator.validateDealerRequest({
-      cpf,
-      email,
-      password,
-    });
 
     return this.dealerRepository.insert({
       name,

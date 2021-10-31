@@ -14,7 +14,7 @@ export default class AuthMiddleware {
   protected async authenticate(jwtToken: string) {
     try {
       if (!process.env.JWT_SECRET) {
-        console.log("As variável JWT_SECRET não foi definida");
+        console.log("A variável JWT_SECRET não foi definida");
         throw new InternalErrorException("Erro interno");
       }
 
@@ -35,7 +35,7 @@ export default class AuthMiddleware {
         throw new AuthenticationException("Token expirado.");
       }
 
-      throw new AuthenticationException("Acesso não autorizado.");
+      throw error;
     }
   }
 

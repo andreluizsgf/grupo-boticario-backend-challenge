@@ -31,7 +31,7 @@ describe("Order Service", () => {
       const dbDealer = mockDbDealer({ cpf: mockOrder.dealerCpf });
 
       sandbox.stub(OrderRepository.prototype, "insert").returns(Promise.resolve(dbOrder));
-      sandbox.stub(OrderRepository.prototype, "getTotalForDealer").returns(
+      sandbox.stub(OrderRepository.prototype, "getAmountSoldInMonthForDealer").returns(
         Promise.resolve({
           value: mockOrder.subtotal,
         })
@@ -65,7 +65,7 @@ describe("Order Service", () => {
 
       sandbox.stub(OrderRepository.prototype, "findOneBy").returns(Promise.resolve(undefined));
       sandbox.stub(DealerRepository.prototype, "findOneBy").returns(Promise.resolve(undefined));
-      sandbox.stub(OrderRepository.prototype, "getTotalForDealer").returns(
+      sandbox.stub(OrderRepository.prototype, "getAmountSoldInMonthForDealer").returns(
         Promise.resolve({
           value: mockOrder.subtotal,
         })

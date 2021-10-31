@@ -8,7 +8,7 @@ export default class OrderRepository extends BaseRepository<Order> implements IO
     super("orders");
   }
 
-  async getTotalForDealer(dealerCpf: string): Promise<{ value: number }> {
+  async getAmountSoldInMonthForDealer(dealerCpf: string): Promise<{ value: number }> {
     return await knex("orders as o")
       .select(knex.raw('COALESCE(SUM("subtotal"), 0) as value'))
       .where("o.dealer_cpf", dealerCpf)

@@ -49,7 +49,7 @@ export default class OrderService implements IOrderService {
       throw new NotFoundException("O revendedor informado não existe.");
     }
 
-    const { value } = await this.orderRepository.getTotalForDealer(dealerCpf);
+    const { value } = await this.orderRepository.getAmountSoldInMonthForDealer(dealerCpf);
 
     const cashbackPercentage = this.getCashbackPercentage(value);
 

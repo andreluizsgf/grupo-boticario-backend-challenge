@@ -12,5 +12,5 @@ export interface IOrderRepository extends IBaseRepository<Order> {
     dealerId: string,
     status?: OrderStatus
   ): Promise<PaginationResult<Order>>;
-  getTotalForDealer(dealerCpf: string): Promise<{ value: number }>;
+  getAmountSoldInMonthForDealer(dealerCpf: string): Promise<{ value: number }>;
 }
