@@ -5,9 +5,9 @@ import faker from "faker";
 dotenv.config({ path: path.join(__dirname, "../", ".env") });
 
 process.env.TEST = "true";
+process.env.PG_DB_NAME = faker.random.word().toLowerCase();
 
 async function createDatabase() {
-  process.env.PG_DB_NAME = faker.random.word();
   try {
     const client = new Client({
       host: process.env.PG_DB_HOST,
@@ -17,7 +17,6 @@ async function createDatabase() {
     });
 
     await client.connect();
-    await client.query(`DROP DATABASE IF EXISTS ${process.env.PG_DB_NAME}`);
     await client.query(`CREATE DATABASE ${process.env.PG_DB_NAME}`);
 
     await client.end();
