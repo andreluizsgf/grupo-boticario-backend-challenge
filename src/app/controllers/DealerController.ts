@@ -28,11 +28,11 @@ export default class DealerController {
       });
 
       const response: DealerResponse = {
-        cpf: dealer.cpf,
-        createdAt: dealer.createdAt,
-        email: dealer.email,
         id: dealer.id,
         name: dealer.name,
+        email: dealer.email,
+        cpf: dealer.cpf,
+        createdAt: dealer.createdAt,
         updatedAt: dealer.updatedAt,
       };
 

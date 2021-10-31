@@ -27,8 +27,7 @@ class Router {
     this.errorMiddleware = errorMiddleware;
     const router = express.Router();
 
-    router.use("/auth/login", this.authController.login.bind(this.authController));
-
+    router.post("/auth/login", this.authController.login.bind(this.authController));
     router.post("/dealer", this.dealerController.create.bind(this.dealerController));
 
     router.use(this.authMiddleware.handle.bind(this.authMiddleware));
