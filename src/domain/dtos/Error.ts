@@ -40,6 +40,6 @@ export class AuthenticationException extends HttpException {
 
 export class IntegrationException extends HttpException {
   constructor(message: string) {
-    super("AuthenticationException", message, 300);
+    super("IntegrationException", message, 503);
   }
 }

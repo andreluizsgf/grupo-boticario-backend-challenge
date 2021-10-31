@@ -21,9 +21,7 @@ export default class AuthMiddleware {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const payload: any = jwt.verify(jwtToken, process.env.JWT_SECRET);
 
-      const dealer = await this.dealerRepository.findOneBy({
-        id: payload.dealer.id,
-      });
+      const dealer = await this.dealerRepository.get(payload.dealer.id);
 
       if (!dealer) {
         throw new AuthenticationException("Acesso não autorizado.");

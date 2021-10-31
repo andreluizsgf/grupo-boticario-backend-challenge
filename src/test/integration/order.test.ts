@@ -136,7 +136,7 @@ describe("Order", () => {
   });
 
   describe("List", () => {
-    test("Should list created orders", async () => {
+    test.each([true, false])("Should list created orders", async (statusFilter) => {
       const { accessToken, mockDealer } = await getValidAccessToken(app);
       const mockOrder = mockOrderRequest({ dealerCpf: mockDealer.cpf });
       const createOrderResponse = await request(app)
@@ -145,9 +145,15 @@ describe("Order", () => {
         .send(mockOrder)
         .expect(201);
 
+      let path = "/order";
+
+      if (statusFilter) {
+        path += "?order?currentPage=1&perPage=1&status=validating";
+      }
+
       const createdOrder: OrderResponse = createOrderResponse.body;
       const listOrdersResponse = await request(app)
-        .get("/order?currentPage=1&perPage=1")
+        .get(path)
         .set("Authorization", `Bearer ${accessToken}`);
 
       const listedOrders: ListOrdersResponse = listOrdersResponse.body;

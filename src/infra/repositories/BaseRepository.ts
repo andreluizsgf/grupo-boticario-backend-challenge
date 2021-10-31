@@ -49,10 +49,6 @@ export default class BaseRepository<T extends BaseModel> implements IBaseReposit
     return (await knex(this.tableName).select("*").where({ id }).first()) as T | undefined;
   }
 
-  async delete(id: string) {
-    return (await knex(this.tableName).delete("*").where({ id }).first()) as T | undefined;
-  }
-
   async findOneBy(condition: Filter<T>) {
     return this.select().where(condition).first() as Promise<T | undefined>;
   }

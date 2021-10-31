@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit",
+    "test": "jest --detectOpenHandles --forceExit --coverage",
     "build": "tsc",
     "start": "node build/src/server.js",
     "dev": "nodemon -r dotenv/config src/server.ts",

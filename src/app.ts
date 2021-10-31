@@ -82,7 +82,7 @@ export default class Application {
     this.app.use(cors());
 
     if (!process.env.TEST) {
-      this.app.use(morgan(':date[iso] :method :url -> :status [:response-time ms]'));
+      this.app.use(morgan(":date[iso] :method :url -> :status [:response-time ms]"));
     }
 
     this.app.use(express.json());

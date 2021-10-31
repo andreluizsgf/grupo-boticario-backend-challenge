@@ -12,5 +12,6 @@ export default async (): Promise<Config.InitialOptions> => {
     globalSetup: "./src/test/setup.ts",
     transformIgnorePatterns: ["../node_modules/(?!variables/.*)"],
     verbose: true,
+    collectCoverage: true,
   };
 };
