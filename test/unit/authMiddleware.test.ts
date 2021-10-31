@@ -1,7 +1,7 @@
-import DealerRepository from "../../infra/repositories/DealerRepository";
+import DealerRepository from "../../src/infra/repositories/DealerRepository";
 import sinon from "sinon";
 import Sinon from "sinon";
-import AuthMiddleware from "../../app/middlewares/AuthMiddleware";
+import AuthMiddleware from "../../src/app/middlewares/AuthMiddleware";
 import express from "express";
 import jwt from "jsonwebtoken";
 import { mockDbDealer } from "../mocks/dealer";

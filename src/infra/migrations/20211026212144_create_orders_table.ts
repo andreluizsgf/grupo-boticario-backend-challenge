@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string("dealer_cpf").notNullable();
     table.uuid("dealer_id").notNullable().references("dealers.id");
     table.dateTime("date").notNullable();
-    table.integer("subtotal").notNullable();
+    table.integer("subtotal_in_cents").notNullable();
     table.integer("cashback_percentage").notNullable();
     table.integer("cashback_value_in_cents").notNullable();
     table.enu("status", ["validating", "approved"]).notNullable();

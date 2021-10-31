@@ -1,12 +1,12 @@
-import OrderService from "../../app/services/OrderService";
-import OrderValidator from "../../domain/common/validators/OrderValidator";
-import OrderRepository from "../../infra/repositories/OrderRepository";
+import OrderService from "../../src/app/services/OrderService";
+import OrderValidator from "../../src/domain/common/validators/OrderValidator";
+import OrderRepository from "../../src/infra/repositories/OrderRepository";
 import sinon from "sinon";
 import { mockDbOrder, mockOrderRequest } from "../mocks/order";
-import NotFoundException, { ConflictException } from "../../domain/dtos/Error";
+import NotFoundException, { ConflictException } from "../../src/domain/dtos/Error";
 import Sinon from "sinon";
 import faker from "faker";
-import DealerRepository from "../../infra/repositories/DealerRepository";
+import DealerRepository from "../../src/infra/repositories/DealerRepository";
 import { mockDbDealer } from "../mocks/dealer";
 
 const sandbox: Sinon.SinonSandbox = sinon.createSandbox();

@@ -1,12 +1,12 @@
 import request from "supertest";
-import Application from "../../app";
-import { CreateDealerRequest } from "../../domain/dtos/DealerDto";
-import { Dealer } from "../../domain/entities/Dealer";
+import Application from "../../src/app/app";
+import { CreateDealerRequest } from "../../src/domain/dtos/DealerDto";
+import { Dealer } from "../../src/domain/entities/Dealer";
 import { mockDealerRequest } from "../mocks/dealer";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import faker from "faker";
-import { BoticarioResponse } from "../../infra/integrations/BoticarioApiIntegration";
+import { BoticarioResponse } from "../../src/infra/integrations/BoticarioApiIntegration";
 import { generate } from "gerador-validador-cpf";
 import { getValidAccessToken } from "../helpers";
 import e from "express";

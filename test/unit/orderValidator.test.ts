@@ -1,7 +1,7 @@
 import faker from "faker";
-import OrderValidator from "../../domain/common/validators/OrderValidator";
+import OrderValidator from "../../src/domain/common/validators/OrderValidator";
 import { generate } from "gerador-validador-cpf";
-import { ORDER_STATUS } from "../../domain/entities/Order";
+import { ORDER_STATUS } from "../../src/domain/entities/Order";
 import { generateLaterDate } from "../mocks/order";
 
 const orderValidator = new OrderValidator();

@@ -1,11 +1,11 @@
-import DealerRepository from "../../infra/repositories/DealerRepository";
+import DealerRepository from "../../src/infra/repositories/DealerRepository";
 import sinon from "sinon";
 import { mockDbDealer } from "../mocks/dealer";
 import Sinon from "sinon";
-import AuthService from "../../app/services/AuthService";
+import AuthService from "../../src/app/services/AuthService";
 import { hash } from "bcrypt";
 import faker from "faker";
-import NotFoundException from "../../domain/dtos/Error";
+import NotFoundException from "../../src/domain/dtos/Error";
 
 const sandbox: Sinon.SinonSandbox = sinon.createSandbox();
 

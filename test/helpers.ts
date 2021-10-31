@@ -1,6 +1,6 @@
 import e from "express";
-import { CreateDealerRequest } from "../domain/dtos/DealerDto";
-import { Dealer } from "../domain/entities/Dealer";
+import { CreateDealerRequest } from "../src/domain/dtos/DealerDto";
+import { Dealer } from "../src/domain/entities/Dealer";
 import { mockDealerRequest } from "./mocks/dealer";
 import request from "supertest";
 

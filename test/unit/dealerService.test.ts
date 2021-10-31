@@ -1,10 +1,10 @@
-import DealerService from "../../app/services/DealerService";
-import DealerValidator from "../../domain/common/validators/DealerValidator";
-import BoticarionApiIntegration from "../../infra/integrations/BoticarioApiIntegration";
-import DealerRepository from "../../infra/repositories/DealerRepository";
+import DealerService from "../../src/app/services/DealerService";
+import DealerValidator from "../../src/domain/common/validators/DealerValidator";
+import BoticarionApiIntegration from "../../src/infra/integrations/BoticarioApiIntegration";
+import DealerRepository from "../../src/infra/repositories/DealerRepository";
 import sinon from "sinon";
 import { mockDbDealer, mockDealerRequest } from "../mocks/dealer";
-import { ConflictException } from "../../domain/dtos/Error";
+import { ConflictException } from "../../src/domain/dtos/Error";
 import Sinon from "sinon";
 import faker from "faker";
 

@@ -1,7 +1,7 @@
-import { Order, ORDER_STATUS } from "../../domain/entities/Order";
+import { Order, ORDER_STATUS } from "../../src/domain/entities/Order";
 import faker from "faker";
 import { generate } from "gerador-validador-cpf";
-import { CreateOrderRequest } from "../../domain/dtos/OrderDto";
+import { CreateOrderRequest } from "../../src/domain/dtos/OrderDto";
 import { addDays } from "date-fns";
 
 export function mockDbOrder(partial?: Partial<Order>): Order {

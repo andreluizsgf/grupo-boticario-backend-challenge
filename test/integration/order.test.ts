@@ -1,11 +1,11 @@
 import { generate } from "gerador-validador-cpf";
 import request from "supertest";
-import Application from "../../app";
+import Application from "../../src/app/app";
 import { generateLaterDate, mockOrderRequest } from "../mocks/order";
 import faker from "faker";
 import { getValidAccessToken } from "../helpers";
 import e from "express";
-import { ListOrdersResponse, OrderResponse } from "../../domain/dtos/OrderDto";
+import { ListOrdersResponse, OrderResponse } from "../../src/domain/dtos/OrderDto";
 import * as fns from "date-fns";
 
 let app: e.Express;

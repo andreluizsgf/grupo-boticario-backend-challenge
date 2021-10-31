@@ -1,6 +1,6 @@
 import request from "supertest";
-import Application from "../../app";
-import { CreateDealerRequest } from "../../domain/dtos/DealerDto";
+import Application from "../../src/app/app";
+import { CreateDealerRequest } from "../../src/domain/dtos/DealerDto";
 import { mockDealerRequest } from "../mocks/dealer";
 import faker from "faker";
 
