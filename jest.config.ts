@@ -8,6 +8,7 @@ export default async (): Promise<Config.InitialOptions> => {
       "node_modules/variables/.+\\.(j|t)sx?$": "ts-jest",
     },
     globalSetup: "./test/setup.ts",
+    globalTeardown: "./test/teardown.ts",
     transformIgnorePatterns: ["../node_modules/(?!variables/.*)"],
     verbose: true,
     collectCoverage: true,

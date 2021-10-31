@@ -9,20 +9,18 @@ import { ListOrdersResponse, OrderResponse } from "../../src/domain/dtos/OrderDt
 import * as fns from "date-fns";
 
 let app: e.Express;
-const specialCpf = generate();
 
 beforeAll(async () => {
   const application = new Application();
   app = application.app;
   await application.start();
-  process.env.SPECIAL_DEALER_CPF = specialCpf;
 });
 
 describe("Order", () => {
   describe("Create", () => {
     test.each([
       [generate(), "validating"],
-      [specialCpf, "approved"],
+      [process.env.SPECIAL_DEALER_CPF, "approved"],
     ])("Should create a order.", async (cpf, status) => {
       const { accessToken, mockDealer } = await getValidAccessToken(app, { cpf });
       const mockOrder = mockOrderRequest({ dealerCpf: mockDealer.cpf });

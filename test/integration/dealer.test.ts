@@ -15,7 +15,6 @@ const cpf = generate();
 let app: e.Express;
 
 beforeAll(async () => {
-  process.env.BOTICARIO_API_URL = faker.internet.url();
   mockBoticarioApiIntegration();
   const application = new Application();
   app = application.app;
