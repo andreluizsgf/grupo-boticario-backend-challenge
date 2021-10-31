@@ -10,11 +10,10 @@ export default class ErrorMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
+    console.error(error);
     if (error instanceof HttpException) {
       return res.status(error.statusCode).send({ error: error.message });
     }
-
-    console.log(error);
 
     return res.send({ error: "Erro interno." }).status(500);
   }
