@@ -11,7 +11,7 @@ export interface Order extends BaseModel {
   dealerCpf: string;
   dealerId: string;
   date: Date;
-  subtotal: number;
+  valueInCents: number;
   cashbackPercentage: number;
   cashbackValueInCents: number;
 }

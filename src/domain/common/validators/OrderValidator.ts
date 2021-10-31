@@ -5,8 +5,8 @@ import { Dealer } from "../../entities/Dealer";
 import { OrderStatus, ORDER_STATUS } from "../../entities/Order";
 
 export default class OrderValidator {
-  validateSubtotal(subtotal: number) {
-    if (subtotal < 0) {
+  validatevalueInCents(valueInCents: number) {
+    if (valueInCents < 0) {
       throw new InvalidArgumentException("O valor da compra deve ser maior que 0.");
     }
   }
@@ -51,11 +51,11 @@ export default class OrderValidator {
     dealerCpf: string;
     code: string;
     date: string;
-    subtotal: number;
+    valueInCents: number;
     currentDealer: Dealer;
   }) {
     this.validateCpf(args.dealerCpf, args.currentDealer.cpf);
-    this.validateSubtotal(args.subtotal);
+    this.validatevalueInCents(args.valueInCents);
     this.validateDate(args.date);
   }
 

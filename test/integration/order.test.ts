@@ -36,9 +36,9 @@ describe("Order", () => {
       expect(createdOrder).toMatchObject({
         code: mockOrder.code,
         dealerCpf: mockOrder.dealerCpf,
-        subtotal: mockOrder.subtotal,
+        valueInCents: mockOrder.valueInCents,
         cashbackPercentage: 10,
-        cashbackValueInCents: Math.round((mockOrder.subtotal * 10) / 100),
+        cashbackValueInCents: Math.round((mockOrder.valueInCents * 10) / 100),
         status,
       });
     });
@@ -47,7 +47,7 @@ describe("Order", () => {
       const { accessToken, mockDealer } = await getValidAccessToken(app);
       const mockOrder = mockOrderRequest({
         dealerCpf: mockDealer.cpf,
-        subtotal: faker.datatype.number() + 100000,
+        valueInCents: faker.datatype.number() + 100000,
         date: fns.addMonths(new Date(), -2).toISOString(),
       });
 
@@ -65,7 +65,7 @@ describe("Order", () => {
         .send(
           mockOrderRequest({
             dealerCpf: mockDealer.cpf,
-            subtotal: faker.datatype.number() + 160000,
+            valueInCents: faker.datatype.number() + 160000,
           })
         )
         .expect(201);
@@ -78,7 +78,7 @@ describe("Order", () => {
         .send(
           mockOrderRequest({
             dealerCpf: mockDealer.cpf,
-            subtotal: faker.datatype.number() + 160000,
+            valueInCents: faker.datatype.number() + 160000,
           })
         )
         .expect(201);
@@ -117,10 +117,10 @@ describe("Order", () => {
       expect(JSON.parse(createOrderResponse.text).error).toBe(errorMessage);
     });
 
-    test("Should not create a order due subtotal less than zero.", async () => {
+    test("Should not create a order due valueInCents less than zero.", async () => {
       const { accessToken, mockDealer } = await getValidAccessToken(app);
       const mockOrder = mockOrderRequest({
-        subtotal: -faker.datatype.number(),
+        valueInCents: -faker.datatype.number(),
         dealerCpf: mockDealer.cpf,
       });
       const createOrderResponse = await request(app)

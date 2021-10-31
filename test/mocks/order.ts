@@ -5,9 +5,9 @@ import { CreateOrderRequest } from "../../src/domain/dtos/OrderDto";
 import { addDays } from "date-fns";
 
 export function mockDbOrder(partial?: Partial<Order>): Order {
-  const subtotal = faker.datatype.number();
+  const valueInCents = faker.datatype.number();
   const cashbackPercentage = faker.datatype.number(20);
-  const cashbackValueInCents = Math.round((subtotal * cashbackPercentage) / 100);
+  const cashbackValueInCents = Math.round((valueInCents * cashbackPercentage) / 100);
 
   return {
     id: faker.datatype.uuid(),
@@ -17,7 +17,7 @@ export function mockDbOrder(partial?: Partial<Order>): Order {
     dealerId: faker.datatype.uuid(),
     status: faker.random.arrayElement(ORDER_STATUS),
     cashbackValueInCents,
-    subtotal,
+    valueInCents,
     date: new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -29,7 +29,7 @@ export function mockOrderRequest(partial?: Partial<CreateOrderRequest>): CreateO
   return {
     code: faker.random.alphaNumeric(3),
     dealerCpf: generate(),
-    subtotal: faker.datatype.number(),
+    valueInCents: faker.datatype.number(),
     date: new Date().toISOString(),
     ...partial,
   };

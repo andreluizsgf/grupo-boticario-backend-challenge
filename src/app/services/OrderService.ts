@@ -23,13 +23,13 @@ export default class OrderService implements IOrderService {
   }
 
   async create(currentDealer: Dealer, createOrderRequest: CreateOrderRequest) {
-    const { code, date, dealerCpf, subtotal } = createOrderRequest;
+    const { code, date, dealerCpf, valueInCents } = createOrderRequest;
 
     this.orderValidator.validateOrderRequest({
       code,
       date,
       dealerCpf,
-      subtotal,
+      valueInCents,
       currentDealer,
     });
 
@@ -55,12 +55,12 @@ export default class OrderService implements IOrderService {
 
     return this.orderRepository.insert({
       dealerCpf,
-      subtotal,
+      valueInCents,
       code,
       date: new Date(date),
       dealerId: dealer.id,
       cashbackPercentage,
-      cashbackValueInCents: Math.round((subtotal * cashbackPercentage) / 100),
+      cashbackValueInCents: Math.round((valueInCents * cashbackPercentage) / 100),
       status: dealerCpf === process.env.SPECIAL_DEALER_CPF ? "approved" : "validating",
     });
   }

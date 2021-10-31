@@ -4,7 +4,7 @@ import { PaginationResponse } from "./Common";
 interface BaseOrderRequest {
   code: string;
   dealerCpf: string;
-  subtotal: number;
+  valueInCents: number;
 }
 
 export interface CreateOrderRequest extends BaseOrderRequest {

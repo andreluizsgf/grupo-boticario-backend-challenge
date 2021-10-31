@@ -14,9 +14,9 @@ export default class OrderController {
   async create(req: express.Request, res: express.Response, next: NextFunction) {
     try {
       const currentDealer: Dealer = res.locals.currentDealer;
-      const { code, date, dealerCpf, subtotal } = req.body;
+      const { code, date, dealerCpf, valueInCents } = req.body;
 
-      if (!code || !date || !dealerCpf || !subtotal) {
+      if (!code || !date || !dealerCpf || !valueInCents) {
         throw new InvalidArgumentException("Todos os parâmetros devem ser informados.");
       }
 
@@ -24,7 +24,7 @@ export default class OrderController {
         code,
         date,
         dealerCpf,
-        subtotal,
+        valueInCents,
       });
 
       return res.status(201).send(order);

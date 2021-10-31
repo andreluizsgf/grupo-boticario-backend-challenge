@@ -52,14 +52,14 @@ describe("Order Validator", () => {
     });
   });
 
-  describe("subtotal", () => {
-    test("Should not throw error if subtotal is greater than zero.", () => {
-      expect(orderValidator.validateSubtotal(faker.datatype.number())).toBe(undefined);
+  describe("valueInCents", () => {
+    test("Should not throw error if valueInCents is greater than zero.", () => {
+      expect(orderValidator.validatevalueInCents(faker.datatype.number())).toBe(undefined);
     });
 
-    test("Should throw error if subtotal is less than or equal zero.", () => {
+    test("Should throw error if valueInCents is less than or equal zero.", () => {
       try {
-        orderValidator.validateSubtotal(-faker.datatype.number());
+        orderValidator.validatevalueInCents(-faker.datatype.number());
       } catch (error) {
         expect(error.message).toBe("O valor da compra deve ser maior que 0.");
       }
