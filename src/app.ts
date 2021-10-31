@@ -16,7 +16,7 @@ import OrderValidator from "./domain/common/validators/OrderValidator";
 import { knex } from "./infra/knex";
 import BoticarionApiIntegration from "./infra/integrations/BoticarioApiIntegration";
 import morgan from "morgan";
-
+import cors from "cors";
 export default class Application {
   private validators = this.initializeValidators();
   private repositories = this.initializeRepositories();
@@ -79,7 +79,12 @@ export default class Application {
 
   public async start() {
     await knex.migrate.latest();
-    this.app.use(morgan(':date[iso] :method :url -> :status [:response-time ms]'));
+    this.app.use(cors());
+
+    if (!process.env.TEST) {
+      this.app.use(morgan(':date[iso] :method :url -> :status [:response-time ms]'));
+    }
+
     this.app.use(express.json());
     new Router(
       this.app,

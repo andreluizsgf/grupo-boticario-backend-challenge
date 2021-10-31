@@ -7,6 +7,7 @@ process.env.PG_DB_USER = "postgres";
 process.env.PG_DB_PORT = "5432";
 process.env.PG_DB_NAME = "dbtest";
 process.env.JWT_SECRET = "HS256";
+process.env.TEST = "true";
 
 async function createDatabase() {
   try {
