@@ -1,5 +1,6 @@
 import express, { NextFunction } from "express";
 import { InvalidArgumentException } from "../../domain/dtos/Error";
+import { ListOrdersResponse } from "../../domain/dtos/OrderDto";
 import { Dealer } from "../../domain/entities/Dealer";
 import { IOrderService } from "../../domain/services/IOrderService";
 
@@ -40,13 +41,27 @@ export default class OrderController {
       const currentPage = req.query.currentPage as number | undefined;
       const perPage = req.query.perPage as number | undefined;
 
-      const orders = await this.orderService.list(currentDealer, {
+      const listedOrders = await this.orderService.list(currentDealer, {
         status,
         currentPage: currentPage ?? 1,
         perPage: perPage ?? 10,
       });
 
-      return res.status(200).send(orders);
+      const response: ListOrdersResponse = {
+        data: listedOrders.data.map((o) => {
+          return {
+            code: o.code,
+            status: o.status,
+            valueInCents: o.valueInCents,
+            cashbackPercentage: o.cashbackPercentage,
+            cashbackValueInCents: o.cashbackValueInCents,
+            date: o.date,
+          };
+        }),
+        pagination: listedOrders.pagination,
+      };
+
+      return res.status(200).send(response);
     } catch (error) {
       next(error);
     }

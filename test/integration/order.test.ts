@@ -156,7 +156,7 @@ describe("Order", () => {
 
       const listedOrders: ListOrdersResponse = listOrdersResponse.body;
 
-      expect(listedOrders.data.find((o) => o.id === createdOrder.id)).toBeTruthy();
+      expect(listedOrders.data.find((o) => o.code === createdOrder.code)).toBeTruthy();
     });
   });
 

@@ -3,11 +3,11 @@ import { PaginationResponse } from "./Common";
 
 interface BaseOrderRequest {
   code: string;
-  dealerCpf: string;
   valueInCents: number;
 }
 
 export interface CreateOrderRequest extends BaseOrderRequest {
+  dealerCpf: string;
   date: string;
 }
 
@@ -23,11 +23,8 @@ export interface ListOrdersResponse {
 }
 
 export interface OrderResponse extends BaseOrderRequest {
-  id: string;
   status: OrderStatus;
   cashbackPercentage: number;
   cashbackValueInCents: number;
   date: Date;
-  createdAt: Date;
-  updatedAt: Date;
 }

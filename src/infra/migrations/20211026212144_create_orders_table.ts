@@ -3,7 +3,7 @@ import { Knex } from "knex";
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("orders", (table) => {
     table.uuid("id").primary();
-    table.string("code").notNullable();
+    table.string("code").notNullable().unique();
     table.string("dealer_cpf").notNullable();
     table.uuid("dealer_id").notNullable().references("dealers.id");
     table.dateTime("date").notNullable();

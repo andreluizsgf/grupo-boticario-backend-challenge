@@ -73,10 +73,10 @@ All endpoints below require an access token that can be generated consuming this
 	"password": "password"
 }
 ```
-This reproduces an JWT Token. It should be informed as a Bearer Token in Authentication Header.
+This reproduces a JWT Token. It should be informed as a Bearer Token in Authentication Header.
 
 ### Get dealer cashback: GET /dealer/cashback
-This one gets the available cashback credit a dealer has based on Boticario Grupo Api.
+This one gets the available amount of cashback credit a dealer has based on Boticario Grupo Api
 
 ### Create a order: POST /order
 To create a dealer you need to send a json respecting the following format:
@@ -90,8 +90,7 @@ To create a dealer you need to send a json respecting the following format:
 ```
 
 ### List orders: GET /order
-This one list all created orders for a dealer. For default it will retrieve a pagination with 10 items per page, on the first page.
-Optionally you can inform
+This one lists all created orders for a dealer. By default it will retrieve a pagination with 10 items per page, on the first page. Optionally you can inform
 ```
 {
     currentPage: number,
@@ -106,9 +105,10 @@ To easily test it, download a complete [Insomnia Collection](https://drive.googl
 
 ## Observations
 
-- All monetary values when dealing with orders should be treated as cents. 
+- All monetary values when dealing with orders should be treated as cents.
+```
 For example:
 R$ 1.00 = 100
 R$ 509.40 = 50940
-
+```
 - All requests generates a log on console, so pay attention.
