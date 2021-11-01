@@ -39,9 +39,9 @@ To run unit and integration tests, run `npm test` on console.
 
 To start the application, just run `npm run dev` and enjoy it! :)
 
-### Usage
+## Usage
 
-## Endpoints
+### Endpoints
 ```
 - POST /auth/login
 - POST /dealer
@@ -50,7 +50,7 @@ To start the application, just run `npm run dev` and enjoy it! :)
 - GET /order
 ```
 
-### Create a dealer: POST /dealer
+#### Create a dealer: POST /dealer
 
 To create a dealer you need to send a json respecting the following format:
 
@@ -63,7 +63,7 @@ To create a dealer you need to send a json respecting the following format:
 }
 ```
 
-### Authentication: POST /auth/login
+#### Authentication: POST /auth/login
 
 All endpoints below require an access token that can be generated consuming this endpoint. All you need to do is send a json with a valid dealer email and password.
 
@@ -75,21 +75,21 @@ All endpoints below require an access token that can be generated consuming this
 ```
 This reproduces a JWT Token. It should be informed as a Bearer Token in Authentication Header.
 
-### Get dealer cashback: GET /dealer/cashback
+#### Get dealer cashback: GET /dealer/cashback
 This one gets the available amount of cashback credit a dealer has based on Boticario Grupo Api
 
-### Create a order: POST /order
+#### Create a order: POST /order
 To create a dealer you need to send a json respecting the following format:
 ```
 {
 	"code": "001",
 	"dealerCpf": "06850588087",
-	"date": "2021-10-31",
+	"date": "2021-10-31 20:03:50",
 	"valueInCents": 50000
 }
 ```
 
-### List orders: GET /order
+#### List orders: GET /order
 This one lists all created orders for a dealer. By default it will retrieve a pagination with 10 items per page, on the first page. Optionally you can inform
 ```
 {
@@ -99,11 +99,11 @@ This one lists all created orders for a dealer. By default it will retrieve a pa
 }
 ```
 on query to specify pagination and filter orders by status.
-## Collection
+### Collection
 
 To easily test it, there is an complete Insomnia Collection on this repository. You just need to import the file `GrupoBoticario_Insomnia_2021-10-31`.
 
-## Observations
+### Observations
 
 - All monetary values when dealing with orders and cashback should be treated as cents.
 ```
