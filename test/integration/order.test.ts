@@ -43,6 +43,8 @@ describe("Order", () => {
 
     test("Should get correct cashback percentage", async () => {
       const { accessToken, mockDealer } = await getValidAccessToken(app);
+      process.env.SPECIAL_DEALER_CPF = mockDealer.cpf;
+
       const mockOrder = mockOrderRequest({
         dealerCpf: mockDealer.cpf,
         valueInCents: faker.datatype.number() + 100000,
