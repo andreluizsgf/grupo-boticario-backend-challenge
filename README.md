@@ -101,11 +101,11 @@ This one lists all created orders for a dealer. By default it will retrieve a pa
 on query to specify pagination and filter orders by status.
 ## Collection
 
-To easily test it, download a complete [Insomnia Collection](https://drive.google.com/file/d/1iXhNhGVxYmRrJcs8mJ1dAw5JQUamXuua/view?usp=sharing).
+To easily test it, there is an complete Insomnia Collection on this repository. You just need to import the file `GrupoBoticario_Insomnia_2021-10-31`.
 
 ## Observations
 
-- All monetary values when dealing with orders should be treated as cents.
+- All monetary values when dealing with orders and cashback should be treated as cents.
 ```
 For example:
 R$ 1.00 = 100
