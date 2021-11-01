@@ -6,6 +6,7 @@ import OrderValidator from "../../domain/common/validators/OrderValidator";
 import { IDealerRepository } from "../../domain/database/repositories/IDealerRepository";
 import { Dealer } from "../../domain/entities/Dealer";
 import { OrderStatus } from "../../domain/entities/Order";
+import { formatCpf, formatPercentageValue } from "../../domain/common/formatters";
 
 export default class OrderService implements IOrderService {
   private orderRepository: IOrderRepository;
@@ -24,11 +25,12 @@ export default class OrderService implements IOrderService {
 
   async create(currentDealer: Dealer, createOrderRequest: CreateOrderRequest) {
     const { code, date, dealerCpf, valueInCents } = createOrderRequest;
+    const cleanedCpf = formatCpf(dealerCpf);
 
     this.orderValidator.validateOrderRequest({
       code,
       date,
-      dealerCpf,
+      dealerCpf: cleanedCpf,
       valueInCents,
       currentDealer,
     });
@@ -42,26 +44,26 @@ export default class OrderService implements IOrderService {
     }
 
     const dealer = await this.dealerRepository.findOneBy({
-      cpf: dealerCpf,
+      cpf: cleanedCpf,
     });
 
     if (!dealer) {
       throw new NotFoundException("O revendedor informado não existe.");
     }
 
-    const { value } = await this.orderRepository.getAmountSoldInMonthForDealer(dealerCpf);
+    const { value } = await this.orderRepository.getAmountSoldInMonthForDealer(currentDealer.cpf);
 
     const cashbackPercentage = this.getCashbackPercentage(valueInCents);
 
     return this.orderRepository.insert({
-      dealerCpf,
+      dealerCpf: cleanedCpf,
       valueInCents,
       code,
       date: new Date(date),
       dealerId: dealer.id,
       cashbackPercentage,
-      cashbackValueInCents: Math.round((value * cashbackPercentage) / 100),
-      status: dealerCpf === process.env.SPECIAL_DEALER_CPF ? "approved" : "validating",
+      cashbackValueInCents: formatPercentageValue(value * cashbackPercentage),
+      status: cleanedCpf === process.env.SPECIAL_DEALER_CPF ? "approved" : "validating",
     });
   }
 

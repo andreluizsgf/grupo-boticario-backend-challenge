@@ -38,13 +38,13 @@ export default class OrderController {
     try {
       const currentDealer: Dealer = res.locals.currentDealer;
       const status = req.query.status as string | undefined;
-      const currentPage = req.query.currentPage as number | undefined;
-      const perPage = req.query.perPage as number | undefined;
+      const currentPage = req.query.currentPage as string | undefined;
+      const perPage = req.query.perPage as string | undefined;
 
       const listedOrders = await this.orderService.list(currentDealer, {
         status,
-        currentPage: currentPage ?? 1,
-        perPage: perPage ?? 10,
+        currentPage: parseInt(currentPage ?? "1"),
+        perPage: parseInt(perPage ?? "10"),
       });
 
       const response: ListOrdersResponse = {

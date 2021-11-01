@@ -3,11 +3,12 @@ import faker from "faker";
 import { generate } from "gerador-validador-cpf";
 import { CreateOrderRequest } from "../../src/domain/dtos/OrderDto";
 import { addDays } from "date-fns";
+import { formatPercentageValue } from "../../src/domain/common/formatters";
 
 export function mockDbOrder(partial?: Partial<Order>): Order {
   const valueInCents = faker.datatype.number();
   const cashbackPercentage = faker.datatype.number(20);
-  const cashbackValueInCents = Math.round((valueInCents * cashbackPercentage) / 100);
+  const cashbackValueInCents = formatPercentageValue(valueInCents * cashbackPercentage);
 
   return {
     id: faker.datatype.uuid(),

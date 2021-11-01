@@ -6,6 +6,7 @@ import { hash } from "bcrypt";
 import DealerValidator from "../../domain/common/validators/DealerValidator";
 import BoticarionApiIntegration from "../../infra/integrations/BoticarioApiIntegration";
 import { Dealer } from "../../domain/entities/Dealer";
+import { formatCpf } from "../../domain/common/formatters";
 export default class DealerService implements IDealerService {
   private dealerRepository: IDealerRepository;
   private dealerValidator: DealerValidator;
@@ -23,9 +24,10 @@ export default class DealerService implements IDealerService {
 
   async create(createDealerRequest: CreateDealerRequest) {
     const { name, cpf, email, password } = createDealerRequest;
+    const cleanedCpf = formatCpf(cpf);
 
     this.dealerValidator.validateDealerRequest({
-      cpf,
+      cpf: cleanedCpf,
       email,
       password,
     });
@@ -39,7 +41,7 @@ export default class DealerService implements IDealerService {
     }
 
     const existingUserByCpf = await this.dealerRepository.findOneBy({
-      cpf,
+      cpf: cleanedCpf,
     });
 
     if (existingUserByCpf) {
@@ -50,7 +52,7 @@ export default class DealerService implements IDealerService {
       name,
       password: await hash(password, 10),
       email,
-      cpf,
+      cpf: cleanedCpf,
     });
   }
 
