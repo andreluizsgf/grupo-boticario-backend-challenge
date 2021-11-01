@@ -51,7 +51,7 @@ export default class OrderService implements IOrderService {
 
     const { value } = await this.orderRepository.getAmountSoldInMonthForDealer(dealerCpf);
 
-    const cashbackPercentage = this.getCashbackPercentage(value);
+    const cashbackPercentage = this.getCashbackPercentage(valueInCents);
 
     return this.orderRepository.insert({
       dealerCpf,
@@ -60,7 +60,7 @@ export default class OrderService implements IOrderService {
       date: new Date(date),
       dealerId: dealer.id,
       cashbackPercentage,
-      cashbackValueInCents: Math.round((valueInCents * cashbackPercentage) / 100),
+      cashbackValueInCents: Math.round((value * cashbackPercentage) / 100),
       status: dealerCpf === process.env.SPECIAL_DEALER_CPF ? "approved" : "validating",
     });
   }
@@ -82,11 +82,11 @@ export default class OrderService implements IOrderService {
     );
   }
 
-  getCashbackPercentage(orderValueAccumulated: number) {
+  getCashbackPercentage(orderValue: number) {
     switch (true) {
-      case orderValueAccumulated <= 100000:
+      case orderValue <= 100000:
         return 10;
-      case orderValueAccumulated <= 150000:
+      case orderValue <= 150000:
         return 15;
       default:
         return 20;

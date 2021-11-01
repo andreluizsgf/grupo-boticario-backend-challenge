@@ -36,7 +36,7 @@ describe("Order", () => {
         dealerCpf: mockOrder.dealerCpf,
         valueInCents: mockOrder.valueInCents,
         cashbackPercentage: 10,
-        cashbackValueInCents: Math.round((mockOrder.valueInCents * 10) / 100),
+        cashbackValueInCents: 0,
         status,
       });
     });
@@ -47,7 +47,7 @@ describe("Order", () => {
 
       const mockOrder = mockOrderRequest({
         dealerCpf: mockDealer.cpf,
-        valueInCents: faker.datatype.number() + 100000,
+        valueInCents: faker.datatype.number({ min: 0, max: 10000 }),
         date: fns.addMonths(new Date(), -2).toISOString(),
       });
 
@@ -65,12 +65,12 @@ describe("Order", () => {
         .send(
           mockOrderRequest({
             dealerCpf: mockDealer.cpf,
-            valueInCents: faker.datatype.number() + 160000,
+            valueInCents: faker.datatype.number({ min: 100000, max: 150000 }),
           })
         )
         .expect(201);
 
-      expect(secondCreateOrderResponse.body.cashbackPercentage).toBe(10);
+      expect(secondCreateOrderResponse.body.cashbackPercentage).toBe(15);
 
       const thirdCreateOrderResponse = await request(app)
         .post("/order")
@@ -78,7 +78,7 @@ describe("Order", () => {
         .send(
           mockOrderRequest({
             dealerCpf: mockDealer.cpf,
-            valueInCents: faker.datatype.number() + 160000,
+            valueInCents: faker.datatype.number({ min: 150001, max: 460000 }),
           })
         )
         .expect(201);

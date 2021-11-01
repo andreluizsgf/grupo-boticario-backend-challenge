@@ -10,6 +10,7 @@ export default async (): Promise<Config.InitialOptions> => {
     globalSetup: "./test/setup.ts",
     globalTeardown: "./test/teardown.ts",
     transformIgnorePatterns: ["../node_modules/(?!variables/.*)"],
+    testPathIgnorePatterns: ["./build"],
     verbose: true,
     collectCoverage: true,
   };
