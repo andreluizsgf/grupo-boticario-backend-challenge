@@ -5,7 +5,7 @@ import faker from "faker";
 dotenv.config({ path: path.join(__dirname, "../", ".env") });
 
 process.env.TEST = "true";
-process.env.PG_DB_NAME = faker.random.word().toLowerCase();
+process.env.PG_DB_NAME = faker.datatype.hexaDecimal(8);
 
 async function createDatabase() {
   try {
@@ -17,7 +17,7 @@ async function createDatabase() {
     });
 
     await client.connect();
-    await client.query(`CREATE DATABASE ${process.env.PG_DB_NAME}`);
+    await client.query(`CREATE DATABASE "${process.env.PG_DB_NAME}"`);
 
     await client.end();
   } catch (error) {

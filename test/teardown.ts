@@ -10,7 +10,7 @@ async function dropDatabase() {
     });
 
     await client.connect();
-    await client.query(`DROP DATABASE IF EXISTS ${process.env.PG_DB_NAME} WITH (FORCE)`);
+    await client.query(`DROP DATABASE IF EXISTS "${process.env.PG_DB_NAME}" WITH (FORCE)`);
     await client.end();
   } catch (error) {
     console.log(error);
