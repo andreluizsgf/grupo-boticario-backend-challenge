@@ -77,9 +77,9 @@ describe("Dealer Service", () => {
         })
       );
 
-      const cashbackCredit = await dealerService.getCashback(mockDbDealer());
+      const cashbackCreditInCents = await dealerService.getCashback(mockDbDealer());
 
-      expect(cashbackCredit).toBe(expectedCashbackCredit);
+      expect(cashbackCreditInCents).toBe(expectedCashbackCredit * 100);
     });
   });
 });

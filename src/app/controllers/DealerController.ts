@@ -45,9 +45,9 @@ export default class DealerController {
   async getCashback(req: express.Request, res: express.Response, next: NextFunction) {
     try {
       const currentDealer: Dealer = res.locals.currentDealer;
-      const cashback = await this.dealerService.getCashback(currentDealer);
+      const cashbackValueInCents = await this.dealerService.getCashback(currentDealer);
 
-      return res.status(200).send({ cashback });
+      return res.status(200).send({ cashbackValueInCents });
     } catch (error) {
       next(error);
     }

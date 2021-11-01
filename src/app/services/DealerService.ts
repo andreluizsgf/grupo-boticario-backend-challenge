@@ -55,6 +55,6 @@ export default class DealerService implements IDealerService {
   }
 
   async getCashback(currentDealer: Dealer) {
-    return (await this.boticarioIntegration.getCashbackCreditForDealer(currentDealer.cpf)).credit;
+    return (await this.boticarioIntegration.getCashbackCreditForDealer(currentDealer.cpf)).credit * 100;
   }
 }
